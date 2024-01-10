@@ -1,11 +1,13 @@
-using System;
+ using System;
 
 
-class Main 
+class MainClass
 {
-    public static void main()
+    public static void Main()
     {
-        UnoDimensional uno = new UnoDimensional(int);
+        Console.WriteLine("Enter array's length: ");
+        UnoDimensional uno = new UnoDimensional(int.Parse(Console.ReadLine()));
+        Console.WriteLine(UnoDimensional.middleValue());
     }
 }
 
@@ -20,7 +22,7 @@ class UnoDimensional
         array = new int[length];
         if  (!choice)
         {
-            Random rand = new Random;
+            Random rand = new Random();
             for (int i = 0; i < length; i++)    
             {
                 array[i] = rand.Next(-1024, 1024);
@@ -35,7 +37,7 @@ class UnoDimensional
         }
     }
 
-    static int middleValue()
+    public static int middleValueUno()
     {
         int counter = 0;
         for (int i = 0; i < array.Length; i++)
@@ -45,7 +47,7 @@ class UnoDimensional
         return counter / array.Length;
     }
 
-    static void GetRidofValue(int[] array)
+    public static void GetRidofValue(int[] array)
     {
         int counter = 0;
         for (int i = 0; i < array.Length; i++)
@@ -71,4 +73,63 @@ class UnoDimensional
         }
     }
 
+}
+
+class DosDimensional
+{
+    private int leinght, height;
+    private int[,] array;
+
+    public DosDimensional(int leinght, height, bool choice = false)
+    {
+        if (!choice)
+        {
+            Random rand = new Random(); 
+            for (int i = 0; i < height; i++)
+            {
+                for (int i = 0; j < length; i++)
+                {
+                    array[i,j] = rand.Next(-1024, 1024);
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < height; i++)
+            {
+                for (int i = 0; j < length; i++)
+                {
+                    array[i,j] = int.Parse(Console.ReadLine());
+                }
+            }
+        }
+    }
+
+    public static int middleValueDos()
+    {
+        counter = 0;
+        for (int i = 0; i < height; i++)
+        {
+            for (int i = 0; j < length; i++)
+            {
+                counter += array[i, j];
+            }
+        }
+        return counter / array.Length;
+    }
+
+    public static int matrixValueDos()
+    {
+        
+        {
+        for(int i = 0; i &lt; arr.GetLength(0); i++)
+        {
+        for(int j = 0; j &lt; arr.GetLength(1); j++)
+        {
+        Console.Write(arr[i,j]+&quot; &quot;);
+        }
+        Console.Write(&quot;\n&quot;);
+        }
+        }
+    }
 }
