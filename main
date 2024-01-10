@@ -1,0 +1,74 @@
+using System;
+
+
+class Main 
+{
+    public static void main()
+    {
+        UnoDimensional uno = new UnoDimensional(int);
+    }
+}
+
+
+class UnoDimensional
+{
+    private int length;
+    private int[] array;
+
+    public UnoDimensional(int length, bool choice = false)
+    {
+        array = new int[length];
+        if  (!choice)
+        {
+            Random rand = new Random;
+            for (int i = 0; i < length; i++)    
+            {
+                array[i] = rand.Next(-1024, 1024);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < length; i++)    
+            {
+                array[i] = int.Parse(Console.ReadLine());
+            }
+        }
+    }
+
+    static int middleValue()
+    {
+        int counter = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            counter += array[i];
+        }
+        return counter / array.Length;
+    }
+
+    static void GetRidofValue(int[] array)
+    {
+        int counter = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (Math.Abs(array[i]) < 100)
+            {
+                counter += 1;
+            }
+        }
+        int[] newArr = new int[counter];
+        int j = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (Math.Abs(array[i]) < 100)
+            {
+                newArr[j] = array[i];
+                j++;
+            }
+        }
+        foreach (var item in newArr)
+        {
+            Console.WriteLine(item);
+        }
+    }
+
+}
