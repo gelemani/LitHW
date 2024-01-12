@@ -1,4 +1,4 @@
- using System;
+using System;
 
 
 class MainClass
@@ -6,11 +6,26 @@ class MainClass
     public static void Main()
     {
         Console.WriteLine("Enter array's length: ");
+        
         UnoDimensional uno = new UnoDimensional(int.Parse(Console.ReadLine()));
-        Console.WriteLine(UnoDimensional.middleValue());
+        uno.PrintUno();
+        uno.middleValueUno();
+        uno.GetRidofValue();
+        uno.NonRepeat();
+
+        DosDimensional dos = new DosDimensional(Input().Item1, Input().Item2);
+        dos.middleValueDos();
+    }
+
+    static (int, int) Input()
+    {
+        Console.WriteLine("Enter number of columns: ");
+        int length = int.Parse(Console.ReadLine());
+        Console.WriteLine("Enter number of rows: ");
+        int height = int.Parse(Console.ReadLine());
+        return (length, height);
     }
 }
-
 
 class UnoDimensional
 {
@@ -20,35 +35,46 @@ class UnoDimensional
     public UnoDimensional(int length, bool choice = false)
     {
         array = new int[length];
-        if  (!choice)
+        if (!choice)
         {
             Random rand = new Random();
-            for (int i = 0; i < length; i++)    
+            for (int i = 0; i < length; i++)
             {
-                array[i] = rand.Next(-1024, 1024);
+                array[i] = rand.Next(-200, 200);
             }
         }
         else
         {
-            for (int i = 0; i < length; i++)    
+            for (int i = 0; i < length; i++)
             {
                 array[i] = int.Parse(Console.ReadLine());
             }
         }
     }
 
-    public static int middleValueUno()
+    public void PrintUno()
     {
+        foreach (int item in array)
+        {
+            Console.Write(item + " ");
+        }
+        Console.WriteLine();
+    }
+
+    public void middleValueUno()
+    {
+        Console.WriteLine("\nTask 1");
         int counter = 0;
         for (int i = 0; i < array.Length; i++)
         {
             counter += array[i];
         }
-        return counter / array.Length;
+        Console.WriteLine(counter / array.Length);
     }
 
-    public static void GetRidofValue(int[] array)
+    public void GetRidofValue()
     {
+        Console.WriteLine("\nTask 2");
         int counter = 0;
         for (int i = 0; i < array.Length; i++)
         {
@@ -73,63 +99,128 @@ class UnoDimensional
         }
     }
 
+    public void NonRepeat()
+    {
+        Console.WriteLine("\nTask 3");
+        int newArrayLength = array.Length;
+        for (int i = 0; i < array.Length; i++)
+        {
+            for (int j = i; j < array.Length; j++)
+            {
+                if (array[i] == array[j] && i != j)
+                {
+                    newArrayLength--;
+                    break;
+                }
+            }
+        }
+        int[] newArray = new int[newArrayLength];
+        for (int i = 0; i < newArray.Length; i++)
+        {
+            newArray[i] = int.MinValue;
+        }
+        int counter = 0;
+
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (!Exists(array[i], newArray))
+            {
+                newArray[counter] = array[i];
+                counter++;
+            }
+        }
+        PrintArray(newArray);
+    }
+    private static bool Exists(int value, int[] array)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] == value)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private static void PrintArray(int[] array)
+    {
+        foreach (var element in array)
+        {
+            Console.Write(element + " ");
+        }
+        Console.WriteLine();
+        Console.WriteLine();
+    }
 }
 
 class DosDimensional
 {
-    private int leinght, height;
+    private int length, height;
     private int[,] array;
 
-    public DosDimensional(int leinght, height, bool choice = false)
+    public DosDimensional(int leinght, int height, bool choice = false)
     {
         if (!choice)
         {
-            Random rand = new Random(); 
-            for (int i = 0; i < height; i++)
-            {
-                for (int i = 0; j < length; i++)
-                {
-                    array[i,j] = rand.Next(-1024, 1024);
-                }
-            }
+            GetTwoDimensionalArray();
         }
         else
         {
             for (int i = 0; i < height; i++)
             {
-                for (int i = 0; j < length; i++)
+                for (int j = 0; j < length; i++)
                 {
-                    array[i,j] = int.Parse(Console.ReadLine());
+                    array[i, j] = int.Parse(Console.ReadLine());
                 }
             }
         }
     }
 
-    public static int middleValueDos()
+    private static int[,] GetTwoDimensionalArray()
     {
-        counter = 0;
+        Random rand = new Random();
+        Console.WriteLine("Введите количество строк:");
+        string rows_str = Console.ReadLine();
+        int rows = int.Parse(rows_str);
+
+        Console.WriteLine("Введите количество столбцов:");
+        string columns_str = Console.ReadLine();
+        int columns = int.Parse(columns_str);
+
+        int[,] array = new int[rows, columns];
+        for (int i = 0; i < array.GetLength(0); i++)
+        {
+            for (int j = 0; j < array.GetLength(1); j++)
+            {
+                array[i, j] = rand.Next(-200, 200);
+            }
+            Console.WriteLine();
+        }
+        return array;
+    }
+
+    public void middleValueDos()
+    {
+        int counter = 0;
         for (int i = 0; i < height; i++)
         {
-            for (int i = 0; j < length; i++)
+            for (int j = 0; j < length; i++)
             {
                 counter += array[i, j];
             }
         }
-        return counter / array.Length;
+        Console.WriteLine(counter / array.Length);
     }
 
-    public static int matrixValueDos()
-    {
-        
-        {
-        for(int i = 0; i &lt; arr.GetLength(0); i++)
-        {
-        for(int j = 0; j &lt; arr.GetLength(1); j++)
-        {
-        Console.Write(arr[i,j]+&quot; &quot;);
-        }
-        Console.Write(&quot;\n&quot;);
-        }
-        }
-    }
+    //public int matrixValueDos()
+    //{
+    //    for (int i = 0; i < height; i++)
+    //    {
+    //        for (int j = 0; j < length; i++)
+    //        {
+    //            Console.Write(arr[i, j] + &quot; &quot;);
+    //        }
+    //        Console.Write(&quot;\n & quot;);
+    //    }
+    //}
 }
