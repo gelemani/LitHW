@@ -13,19 +13,26 @@ class MainClass
         uno.GetRidofValue();
         uno.NonRepeat();
 
-        DosDimensional dos = new DosDimensional(Input().Item1, Input().Item2);
+        (int, int) dosInput = Input();
+        DosDimensional dos = new DosDimensional(dosInput.Item1, dosInput.Item2);
         dos.middleValueDos();
+        dos.matrixValueDos();
+
+        (int, int) jaggedInput = Input();
+        JaggedDimensional jag = new JaggedDimensional(jaggedInput.Item1, jaggedInput.Item2);
+        
     }
 
     static (int, int) Input()
     {
-        Console.WriteLine("Enter number of columns: ");
-        int length = int.Parse(Console.ReadLine());
         Console.WriteLine("Enter number of rows: ");
-        int height = int.Parse(Console.ReadLine());
-        return (length, height);
+        int rows = int.Parse(Console.ReadLine());
+        Console.WriteLine("Enter number of columns: ");
+        int columns = int.Parse(Console.ReadLine());
+        return (rows, columns);
     }
 }
+
 
 class UnoDimensional
 {
@@ -153,22 +160,24 @@ class UnoDimensional
     }
 }
 
+
 class DosDimensional
 {
-    private int length, height;
+    private int rows, columns;
     private int[,] array;
 
-    public DosDimensional(int leinght, int height, bool choice = false)
+    public DosDimensional(int rows, int columns, bool choice = false)
     {
+        array = new int[rows, columns];
         if (!choice)
         {
-            GetTwoDimensionalArray();
+            array = GetTwoDimensionalArray(rows, columns);
         }
         else
         {
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < length; i++)
+                for (int j = 0; j < columns; i++)
                 {
                     array[i, j] = int.Parse(Console.ReadLine());
                 }
@@ -176,18 +185,9 @@ class DosDimensional
         }
     }
 
-    private static int[,] GetTwoDimensionalArray()
+    private int[,] GetTwoDimensionalArray(int rows, int columns)
     {
         Random rand = new Random();
-        Console.WriteLine("Введите количество строк:");
-        string rows_str = Console.ReadLine();
-        int rows = int.Parse(rows_str);
-
-        Console.WriteLine("Введите количество столбцов:");
-        string columns_str = Console.ReadLine();
-        int columns = int.Parse(columns_str);
-
-        int[,] array = new int[rows, columns];
         for (int i = 0; i < array.GetLength(0); i++)
         {
             for (int j = 0; j < array.GetLength(1); j++)
@@ -201,10 +201,11 @@ class DosDimensional
 
     public void middleValueDos()
     {
+        Console.WriteLine("\nTask 1");
         int counter = 0;
-        for (int i = 0; i < height; i++)
+        for (int i = 0; i < array.GetLength(0); i++)
         {
-            for (int j = 0; j < length; i++)
+            for (int j = 0; j < array.GetLength(1); j++)
             {
                 counter += array[i, j];
             }
@@ -212,15 +213,72 @@ class DosDimensional
         Console.WriteLine(counter / array.Length);
     }
 
-    //public int matrixValueDos()
-    //{
-    //    for (int i = 0; i < height; i++)
-    //    {
-    //        for (int j = 0; j < length; i++)
-    //        {
-    //            Console.Write(arr[i, j] + &quot; &quot;);
-    //        }
-    //        Console.Write(&quot;\n & quot;);
-    //    }
-    //}
+    public void matrixValueDos()
+    {
+        Console.WriteLine("\nTask 2.1");
+        for (int i = 0; i < array.GetLength(0); i++)
+        {
+            for (int j = 0; j < array.GetLength(1); j++)
+            {
+                Console.Write(array[i, j] + " ");
+            }
+            Console.Write("\n");
+        }
+
+        Console.WriteLine("\nTask 2.2");
+        for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    var element = i % 2 == 0
+                        ? array[i, array.GetLength(1) - 1 - j]
+                        : array[i, j];
+                    Console.Write($"{element} ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+    }
+}
+
+
+class JaggedDimensional
+{
+    private int rows;
+    private int[][] array;
+
+    public JaggedDimensional(int rows, int columns, bool choice = false)
+    {   
+        array = new int[rows][columns];
+        if (!choice)
+        {
+            array = GetJaggedArray(rows, columns);
+        }
+        else
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    array[i][j] = int.Parse(Console.ReadLine());
+                }
+            Console.WriteLine();
+            }
+        }
+    }
+
+    private int[][] GetJaggedArray(int rows, int columns)
+    {
+        Random rand = new Random();
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                array[i][j] = rand.Next(-200, 200);
+            }
+            Console.WriteLine();
+        }
+        return array;
+    }
 }
