@@ -5,22 +5,20 @@ class MainClass
 {
     public static void Main()
     {
-        Console.WriteLine("Enter array's length: ");
-        
-        UnoDimensional uno = new UnoDimensional(int.Parse(Console.ReadLine()));
-        uno.PrintUno();
-        uno.middleValueUno();
-        uno.GetRidofValue();
-        uno.NonRepeat();
+        //Console.WriteLine("Enter array's length: ");
+        //UnoDimensional uno = new UnoDimensional(int.Parse(Console.ReadLine()));
+        //uno.PrintUno();
+        //uno.middleValueUno();
+        //uno.GetRidofValue();
+        //uno.NonRepeat();
 
-        (int, int) dosInput = Input();
-        DosDimensional dos = new DosDimensional(dosInput.Item1, dosInput.Item2);
-        dos.middleValueDos();
-        dos.matrixValueDos();
+        //(int, int) dosInput = Input();
+        //DosDimensional dos = new DosDimensional(dosInput.Item1, dosInput.Item2);
+        //dos.middleValueDos();
+        //dos.matrixValueDos();
 
-        (int, int) jaggedInput = Input();
         JaggedDimensional jag = new JaggedDimensional(InputJaggedDimensional());
-        
+        jag.MiddleValueJagged();
     }
 
     static (int, int) Input()
@@ -234,18 +232,18 @@ class DosDimensional
 
         Console.WriteLine("\nTask 2.2");
         for (int i = 0; i < array.GetLength(0); i++)
+        {
+            for (int j = 0; j < array.GetLength(1); j++)
             {
-                for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    var element = i % 2 == 0
-                        ? array[i, array.GetLength(1) - 1 - j]
-                        : array[i, j];
-                    Console.Write($"{element} ");
-                }
-                Console.WriteLine();
+                var element = i % 2 == 0
+                    ? array[i, array.GetLength(1) - 1 - j]
+                    : array[i, j];
+                Console.Write($"{element} ");
             }
             Console.WriteLine();
-            Console.WriteLine();
+        }
+        Console.WriteLine();
+        Console.WriteLine();
     }
 }
 
@@ -255,9 +253,8 @@ class JaggedDimensional
     private int rows;
     private int[][] array;
 
-
     public JaggedDimensional(int rows, bool choice = false)
-    {   
+    {
         array = new int[rows][];
         if (!choice)
         {
@@ -267,6 +264,14 @@ class JaggedDimensional
         {
             array = GetJaggedArrayInput(rows);
         }
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < array[i].Length; j++)
+            {
+                Console.Write(array[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
     }
 
     private int[][] GetJaggedArrayRand(int rows)
@@ -274,7 +279,7 @@ class JaggedDimensional
         Random rand = new Random();
         for (int i = 0; i < rows; i++)
         {
-            int columns = rand.Next(1,6);
+            int columns = rand.Next(1, 6);
             array[i] = new int[columns];
             for (int j = 0; j < columns; j++)
             {
@@ -289,13 +294,38 @@ class JaggedDimensional
     {
         for (int i = 0; i < rows; i++)
         {
-            Console.WriteLine("How much element in first podmassive: ");
+            Console.WriteLine($"How much element in {i+1} podmassive: ");
             array[i] = new int[int.Parse(Console.ReadLine())];
             for (int j = 0; j < array[i].Length; j++)
             {
                 array[i][j] = int.Parse(Console.ReadLine());
             }
-        Console.WriteLine();
+            Console.WriteLine();
+        }
+        return array;
+    }
+
+    public void MiddleValueJagged()
+    {
+        Console.WriteLine("\nTask 1");
+        int sum = 0;
+        int counter = 1;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < array[i].Length; j++)
+            {
+                sum += array[i][j];
+                counter += 1;
+            }
+        }
+        try
+        {
+            Console.WriteLine(sum / (counter - 1));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Empty array: {e.Message}");
+            throw;
         }
     }
 }
