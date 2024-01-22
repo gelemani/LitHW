@@ -273,6 +273,7 @@ class JaggedDimensional
         Random rand = new Random();
         for (int i = 0; i < rows; i++)
         {
+						array[i] = new int[]
             for (int j = 0; j < columns; j++)
             {
                 array[i][j] = rand.Next(-200, 200);
