@@ -310,7 +310,7 @@ class JaggedDimensional
         Console.WriteLine("\nTask 1");
         int sum = 0;
         int counter = 1;
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < array.Length; i++)
         {
             for (int j = 0; j < array[i].Length; j++)
             {
@@ -327,5 +327,7 @@ class JaggedDimensional
             Console.WriteLine($"Empty array: {e.Message}");
             throw;
         }
+
+        
     }
 }
