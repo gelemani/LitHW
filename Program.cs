@@ -1,24 +1,40 @@
 using System;
-
+using System.Xml.Serialization;
 
 class MainClass
 {
     public static void Main()
     {
-        //Console.WriteLine("Enter array's length: ");
-        //UnoDimensional uno = new UnoDimensional(int.Parse(Console.ReadLine()));
-        //uno.PrintUno();
-        //uno.middleValueUno();
-        //uno.GetRidofValue();
-        //uno.NonRepeat();
+        Choice();
 
-        //(int, int) dosInput = Input();
-        //DosDimensional dos = new DosDimensional(dosInput.Item1, dosInput.Item2);
-        //dos.middleValueDos();
-        //dos.matrixValueDos();
+        Console.WriteLine("\nOne-dimensional");
+        Console.WriteLine("Enter array's length: ");
+        UnoDimensional uno = new UnoDimensional(int.Parse(Console.ReadLine()));
+        uno.PrintUno();
+        uno.middleValueUno();
+        uno.GetRidofValue();
+        uno.NonRepeat();
 
+        Console.WriteLine("\nTwo-dimensional");
+        (int, int) dosInput = Input();
+        DosDimensional dos = new DosDimensional(dosInput.Item1, dosInput.Item2);
+        dos.middleValueDos();
+        dos.matrixValueDos();
+
+        Console.WriteLine("\nJagged array");
         JaggedDimensional jag = new JaggedDimensional(InputJaggedDimensional());
         jag.MiddleValueJagged();
+        jag.MiddleValueInEachJagged();
+        jag.JaggedArray_ReplaceEvenValues();
+    }
+
+    static bool Choice()
+    {
+
+        Console.WriteLine("Manual(0) or automate(1) ? ");
+        int a = int.Parse(Console.ReadLine());
+        bool choice = a == 0 ? choice = true : false;
+        return choice;
     }
 
     static (int, int) Input()
@@ -161,7 +177,6 @@ class UnoDimensional
             Console.Write(element + " ");
         }
         Console.WriteLine();
-        Console.WriteLine();
     }
 }
 
@@ -243,7 +258,6 @@ class DosDimensional
             Console.WriteLine();
         }
         Console.WriteLine();
-        Console.WriteLine();
     }
 }
 
@@ -264,20 +278,13 @@ class JaggedDimensional
         {
             array = GetJaggedArrayInput(rows);
         }
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < array[i].Length; j++)
-            {
-                Console.Write(array[i][j] + " ");
-            }
-            Console.WriteLine();
-        }
+        PrintArrayJag(array);
     }
 
     private int[][] GetJaggedArrayRand(int rows)
     {
         Random rand = new Random();
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < array.Length; i++)
         {
             int columns = rand.Next(1, 6);
             array[i] = new int[columns];
@@ -294,7 +301,7 @@ class JaggedDimensional
     {
         for (int i = 0; i < rows; i++)
         {
-            Console.WriteLine($"How much element in {i+1} podmassive: ");
+            Console.WriteLine($"How much element in {i + 1} podmassive: ");
             array[i] = new int[int.Parse(Console.ReadLine())];
             for (int j = 0; j < array[i].Length; j++)
             {
@@ -327,7 +334,57 @@ class JaggedDimensional
             Console.WriteLine($"Empty array: {e.Message}");
             throw;
         }
+    }
 
-        
+    public void MiddleValueInEachJagged()
+    {
+        Console.WriteLine("\nTask 2");
+        for (int i = 0; i < array.Length; i++)
+        {
+            int sum = 0;
+            int counter = 1;
+            for (int j = 0; j < array[i].Length; j++)
+            {
+                sum += array[i][j];
+                counter += 1;
+            }
+            try
+            {
+                Console.WriteLine(sum / (counter - 1));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Empty array: {e.Message}");
+                throw;
+            }
+        }
+    }
+
+    public void JaggedArray_ReplaceEvenValues()
+    {
+        Console.WriteLine("\nTask 3");
+        for (int i = 0; i < array.Length; i++)
+        {
+            for (int j = 0; j < array[i].Length; j++)
+            {
+                if (array[i][j] % 2 == 0)
+                {
+                    array[i][j] = i * j;
+                }
+            }
+        }
+        PrintArrayJag(array);    
+    }
+
+    private static void PrintArrayJag(int[][] array)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            for (int j = 0; j < array[i].Length; j++)
+            {
+                Console.Write(array[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
     }
 }
