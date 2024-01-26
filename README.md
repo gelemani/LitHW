@@ -1,3 +1,3 @@
 # LitHW
-This is my classworks and homeworks
+Classworks and homeworks
 Krutikov Fedor 9.5
