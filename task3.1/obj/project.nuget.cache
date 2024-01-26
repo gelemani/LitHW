@@ -1,0 +1,14 @@
+{
+  "version": 2,
+<<<<<<< HEAD
+  "dgSpecHash": "ZM8JTqdMoUaz0yfOwBWEb7Xf1RmG+7UBDb+zpnxRzzYU7sXi/lrZ6tRQ6acolBrKixJPaHjopmpqJy15jsplPQ==",
+  "success": true,
+  "projectFilePath": "/home/user/Документы/projects/project/project.csproj",
+=======
+  "dgSpecHash": "VdHXlbaRV+s4siBxOwt/XOHwwIEvvaCpehHZLrdbtXiABpU5wEVUOlvHcS8utqcvpdySL0b1GgX581mmzoiaNA==",
+  "success": true,
+  "projectFilePath": "/home/user/Документы/f/f.csproj",
+>>>>>>> d1945fa (26.01.24 commit)
+  "expectedPackageFiles": [],
+  "logs": []
+}
