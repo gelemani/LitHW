@@ -1,0 +1,16 @@
+/home/user/Документы/f/obj/Debug/net5.0/f.csproj.AssemblyReference.cache
+/home/user/Документы/f/obj/Debug/net5.0/f.GeneratedMSBuildEditorConfig.editorconfig
+/home/user/Документы/f/obj/Debug/net5.0/f.AssemblyInfoInputs.cache
+/home/user/Документы/f/obj/Debug/net5.0/f.AssemblyInfo.cs
+/home/user/Документы/f/obj/Debug/net5.0/f.csproj.CoreCompileInputs.cache
+/home/user/Документы/f/bin/Debug/net5.0/f
+/home/user/Документы/f/bin/Debug/net5.0/f.deps.json
+/home/user/Документы/f/bin/Debug/net5.0/f.runtimeconfig.json
+/home/user/Документы/f/bin/Debug/net5.0/f.runtimeconfig.dev.json
+/home/user/Документы/f/bin/Debug/net5.0/f.dll
+/home/user/Документы/f/bin/Debug/net5.0/ref/f.dll
+/home/user/Документы/f/bin/Debug/net5.0/f.pdb
+/home/user/Документы/f/obj/Debug/net5.0/f.dll
+/home/user/Документы/f/obj/Debug/net5.0/ref/f.dll
+/home/user/Документы/f/obj/Debug/net5.0/f.pdb
+/home/user/Документы/f/obj/Debug/net5.0/f.genruntimeconfig.cache
