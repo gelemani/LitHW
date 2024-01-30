@@ -5,28 +5,49 @@ class UnoDimensional
 {
     private int length;
     private int[] array;
+    private bool choice;
 
-    public UnoDimensional(int length, bool choice = false)
+    public UnoDimensional(int Length, bool Choice = false)
+    {
+        choice = Choice;
+        length = Length;
+        CreateUno();
+    }
+
+    public void CreateUno()
     {
         array = new int[length];
         if (!choice)
         {
-            Random rand = new Random();
-            for (int i = 0; i < length; i++)
-            {
-                array[i] = rand.Next(-200, 200);
-            }
+           array = GetUnoDimensionalArrayRand(length);
         }
         else
         {
-            for (int i = 0; i < length; i++)
-            {
-                array[i] = int.Parse(Console.ReadLine());
-            }
+            array = GetUnoDimensionalArrayInput(length);
         }
+        PrintUno(array);
     }
 
-    public void PrintUno()
+    private int[] GetUnoDimensionalArrayRand(int length)
+    {
+        Random rand = new Random();
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = rand.Next(-200, 200);
+        }
+        return array;
+    }
+
+    private int[] GetUnoDimensionalArrayInput(int length)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = int.Parse(Console.ReadLine());
+        }
+        return array;
+    }
+
+    public void PrintUno(array)
     {
         foreach (int item in array)
         {

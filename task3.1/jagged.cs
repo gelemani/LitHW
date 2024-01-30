@@ -5,8 +5,16 @@ class JaggedDimensional
 {
     private int rows;
     private int[][] array;
+    private bool choice;
 
-    public JaggedDimensional(int rows, bool choice = false)
+    public JaggedDimensional(int Rows, bool Choice = false)
+    {
+        choice = Choice;
+        rows = Rows;
+        CreateJag();
+    }
+
+    public void CreateJag()
     {
         array = new int[rows][];
         if (!choice)

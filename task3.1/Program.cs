@@ -30,7 +30,6 @@ class MainClass
 
     static bool Choice()
     {
-
         Console.WriteLine("Manual(0) or automate(1) ? ");
         int a = int.Parse(Console.ReadLine());
         bool choice = a == 0 ? choice = true : false;

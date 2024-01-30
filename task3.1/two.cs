@@ -5,27 +5,30 @@ class DosDimensional
 {
     private int rows, columns;
     private int[,] array;
+    private bool choice;
 
-    public DosDimensional(int rows, int columns, bool choice = false)
+    public DosDimensional(int Rows, int Columns, bool Choice = false)
+    {
+        choice = Choice;
+        rows = Rows;
+        columns = Columns;
+        CreateDos();
+    }
+
+    public void CreateDos()
     {
         array = new int[rows, columns];
         if (!choice)
         {
-            array = GetTwoDimensionalArray(rows, columns);
+            array = GetTwoDimensionalArrayRand(rows, columns);
         }
         else
         {
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; i++)
-                {
-                    array[i, j] = int.Parse(Console.ReadLine());
-                }
-            }
+            array = GetTwoDimensionalArrayInput(rows, columns);
         }
     }
 
-    private int[,] GetTwoDimensionalArray(int rows, int columns)
+    private int[,] GetTwoDimensionalArrayRand(int rows, int columns)
     {
         Random rand = new Random();
         for (int i = 0; i < array.GetLength(0); i++)
@@ -35,6 +38,18 @@ class DosDimensional
                 array[i, j] = rand.Next(-200, 200);
             }
             Console.WriteLine();
+        }
+        return array;
+    }
+
+    private int[,] GetTwoDimensionalArrayInput(int rows, int columns)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; i++)
+            {
+                array[i, j] = int.Parse(Console.ReadLine());
+            }
         }
         return array;
     }
