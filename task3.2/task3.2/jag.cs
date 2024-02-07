@@ -1,11 +1,73 @@
 using System;
 
-public class Cat
-{
-    public int Id { get; set; }
 
-    public void Price ()
+public sealed class JaggedDimensional : Array
+{
+    private int rows;
+    private int[][] _array;
+    private bool choice;
+
+    public JaggedDimensional(int Rows, bool Choice = false)
     {
-        Console.WriteLine(Id);
+        choice = Choice;
+        rows = Rows;
+    }
+
+    public override void Create()
+    {
+        _array = new int[rows][];
+        _array = GetJaggedArrayRand(rows);
+    }
+
+    private int[][] GetJaggedArrayRand(int rows)
+    {
+        Random rand = new Random();
+        for (int i = 0; i < _array.Length; i++)
+        {
+            int columns = rand.Next(1, 6);
+            _array[i] = new int[columns];
+            for (int j = 0; j < columns; j++)
+            {
+                _array[i][j] = rand.Next(-200, 200);
+            }
+            Console.WriteLine();
+        }
+        return _array;
+    }
+
+    public override void MiddleValue()
+    {
+        int sum = 0;
+        int counter = 1;
+        for (int i = 0; i < _array.Length; i++)
+        {
+            for (int j = 0; j < _array[i].Length; j++)
+            {
+                sum += _array[i][j];
+                counter += 1;
+            }
+        }
+        try
+        {
+            Console.WriteLine("Average: " + sum / (counter - 1));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Empty array: {e.Message}");
+            throw;
+        }
+    }
+
+
+    public override void Print()
+    {
+        for (int i = 0; i < _array.Length; i++)
+        {
+            for (int j = 0; j < _array[i].Length; j++)
+            {
+                Console.Write(_array[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
     }
 }
