@@ -1,26 +1,21 @@
 using System;
 
 
-public sealed class JaggedDimensional : Array
+public sealed class JaggedDimensional : ArrayBase
 {
     private int rows;
     private int[][] _array;
     private bool choice;
 
-    public JaggedDimensional(int Rows, bool Choice = false)
-    {
-        choice = Choice;
+    public JaggedDimensional(int Rows)
+    { 
         rows = Rows;
+        Create();
     }
 
     public override void Create()
     {
         _array = new int[rows][];
-        _array = GetJaggedArrayRand(rows);
-    }
-
-    private int[][] GetJaggedArrayRand(int rows)
-    {
         Random rand = new Random();
         for (int i = 0; i < _array.Length; i++)
         {
@@ -32,8 +27,8 @@ public sealed class JaggedDimensional : Array
             }
             Console.WriteLine();
         }
-        return _array;
     }
+
 
     public override void MiddleValue()
     {

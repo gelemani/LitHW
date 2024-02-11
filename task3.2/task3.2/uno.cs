@@ -1,31 +1,25 @@
 using System;
 
-public sealed class UnoDimensional : Array
+public sealed class UnoDimensional : ArrayBase
 {
     private int length;
     private int[] _array;
     private bool choice;
 
-    public UnoDimensional(int Length, bool Choice = false)
+    public UnoDimensional(int Length)
     {
-        choice = Choice;
         length = Length;
+        Create();
     }
 
     public override void Create()
     {
         _array = new int[length];
-        _array = GetUnoDimensionalArrayRand(length);
-    }
-
-    private int[] GetUnoDimensionalArrayRand(int length)
-    {
         Random rand = new Random();
         for (int i = 0; i < length; i++)
         {
             _array[i] = rand.Next(-200, 200);
         }
-        return _array;
     }
 
     public override void Print()

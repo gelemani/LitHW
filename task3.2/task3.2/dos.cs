@@ -1,27 +1,22 @@
 using System;
 
 
-public sealed class DosDimensional : Array
+public sealed class DosDimensional : ArrayBase
 {
     private int rows, columns;
     private int[,] _array;
     private bool choice;
 
-    public DosDimensional(int Rows, int Columns, bool Choice = false)
+    public DosDimensional(int Rows, int Columns)
     {
-        choice = Choice;
         rows = Rows;
         columns = Columns;
+        Create();
     }
 
     public override void Create()
     {
         _array = new int[rows, columns];
-        _array = GetTwoDimensionalArrayRand(rows, columns);
-    }
-
-    private int[,] GetTwoDimensionalArrayRand(int rows, int columns)
-    {
         Random rand = new Random();
         for (int i = 0; i < _array.GetLength(0); i++)
         {
@@ -31,7 +26,6 @@ public sealed class DosDimensional : Array
             }
             Console.WriteLine();
         }
-        return _array;
     }
 
 
