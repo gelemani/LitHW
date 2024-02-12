@@ -9,7 +9,7 @@ class Program
         ab[1] = new DosDimensional(4, 4);
         ab[3] = new JaggedDimensional(3);
         foreach (var item in ab)
-        { 
+        {
             item.MiddleValue();
             item.Print();
         }

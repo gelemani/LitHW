@@ -1,0 +1,16 @@
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/task3.2.csproj.AssemblyReference.cache
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/task3.2.GeneratedMSBuildEditorConfig.editorconfig
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/task3.2.AssemblyInfoInputs.cache
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/task3.2.AssemblyInfo.cs
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/task3.2.csproj.CoreCompileInputs.cache
+/home/user/task3.2/LitHW/task3.2/task3.2/bin/Debug/net5.0/task3.2
+/home/user/task3.2/LitHW/task3.2/task3.2/bin/Debug/net5.0/task3.2.deps.json
+/home/user/task3.2/LitHW/task3.2/task3.2/bin/Debug/net5.0/task3.2.runtimeconfig.json
+/home/user/task3.2/LitHW/task3.2/task3.2/bin/Debug/net5.0/task3.2.runtimeconfig.dev.json
+/home/user/task3.2/LitHW/task3.2/task3.2/bin/Debug/net5.0/task3.2.dll
+/home/user/task3.2/LitHW/task3.2/task3.2/bin/Debug/net5.0/ref/task3.2.dll
+/home/user/task3.2/LitHW/task3.2/task3.2/bin/Debug/net5.0/task3.2.pdb
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/task3.2.dll
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/ref/task3.2.dll
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/task3.2.pdb
+/home/user/task3.2/LitHW/task3.2/task3.2/obj/Debug/net5.0/task3.2.genruntimeconfig.cache

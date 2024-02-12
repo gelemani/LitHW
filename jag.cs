@@ -7,15 +7,14 @@ public sealed class JaggedDimensional : ArrayBase
     private int[][] _array;
     private bool choice;
 
-    public JaggedDimensional(int Rows)
+    public JaggedDimensional(int rows)
     { 
-        rows = Rows;
+        _array = new int[rows][];
         Create();
     }
 
-    public override void Create()
+    public override void RandFill()
     {
-        _array = new int[rows][];
         Random rand = new Random();
         for (int i = 0; i < _array.Length; i++)
         {
@@ -29,6 +28,19 @@ public sealed class JaggedDimensional : ArrayBase
         }
     }
 
+    public override void HandFill()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            Console.WriteLine($"How much element in {i + 1} podmassive: ");
+            _array[i] = new int[int.Parse(Console.ReadLine())];
+            for (int j = 0; j < _array[i].Length; j++)
+            {
+                _array[i][j] = int.Parse(Console.ReadLine());
+            }
+            Console.WriteLine();
+        }
+    }
 
     public override void MiddleValue()
     {
@@ -48,7 +60,7 @@ public sealed class JaggedDimensional : ArrayBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Empty array: {e.Message}");
+            Console.WriteLine($"Empty _array: {e.Message}");
             throw;
         }
     }

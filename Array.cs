@@ -1,18 +1,25 @@
+using System;
+
 public abstract class ArrayBase
-{ 
-    public abstract void Create();
+{
     public abstract void MiddleValue();
     public abstract void Print();
-    public abstract int[] CreateArray()
-    {
+    
+    public abstract void RandFill();
+    public abstract void HandFill();
 
-        Random rand = new Random();
-        _array = new int[length];
-        Random rand = new Random();
-        for (int i = 0; i < length; i++)
+    public virtual void Create()
+    {
+        Console.WriteLine("Manual(0) or automate(1) ? ");
+        int a = int.Parse(Console.ReadLine());
+        bool choice = a == 0 ? choice = true : false;
+        if (!choice)
         {
-            _array[i] = rand.Next(-200, 200);
+            RandFill();
         }
-        return _array;
+        else
+        {
+            HandFill();
+        }
     }
 }

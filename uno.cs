@@ -6,19 +6,26 @@ public sealed class UnoDimensional : ArrayBase
     private int[] _array;
     private bool choice;
 
-    public UnoDimensional(int Length)
+    public UnoDimensional(int length)
     {
-        length = Length;
+        _array = new int[length];
         Create();
     }
 
-    public override void Create()
+    public override void RandFill()
     {
-        _array = new int[length];
         Random rand = new Random();
         for (int i = 0; i < length; i++)
         {
             _array[i] = rand.Next(-200, 200);
+        }
+    }
+
+    public override void HandFill()
+    {
+        for (int i = 0; i < length; i++)
+        {
+            _array[i] = int.Parse(Console.ReadLine());
         }
     }
 
