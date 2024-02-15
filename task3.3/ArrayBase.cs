@@ -4,7 +4,7 @@ public abstract class ArrayBase
 {
     public abstract void MiddleValue();
     public abstract void Print();
-    
+
     public abstract void RandFill();
     public abstract void HandFill();
 

@@ -8,7 +8,7 @@ public sealed class JaggedDimensional : ArrayBase
     private bool choice;
 
     public JaggedDimensional(int rows)
-    { 
+    {
         _array = new int[rows][];
         Create();
     }

@@ -1,0 +1,4 @@
+C:\Users\hp\Downloads\lit 1533\OOP\Homework\LitHW\task3.2\task3.2\obj\Debug\net5.0\task3.2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Downloads\lit 1533\OOP\Homework\LitHW\task3.2\task3.2\obj\Debug\net5.0\task3.2.AssemblyInfoInputs.cache
+C:\Users\hp\Downloads\lit 1533\OOP\Homework\LitHW\task3.2\task3.2\obj\Debug\net5.0\task3.2.AssemblyInfo.cs
+C:\Users\hp\Downloads\lit 1533\OOP\Homework\LitHW\task3.2\task3.2\obj\Debug\net5.0\task3.2.csproj.CoreCompileInputs.cache
