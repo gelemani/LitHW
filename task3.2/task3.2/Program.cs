@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 class Program
 {
@@ -7,11 +7,11 @@ class Program
         ArrayBase[] ab = new ArrayBase[3];
         ab[0] = new UnoDimensional(5);
         ab[1] = new DosDimensional(4, 4);
-        ab[3] = new JaggedDimensional(3);
+        ab[2] = new JaggedDimensional(3);
         foreach (var item in ab)
-        { 
-            item.MiddleValue();
+        {
             item.Print();
+            item.MiddleValue();
         }
     }
 }

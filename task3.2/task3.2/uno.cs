@@ -2,29 +2,37 @@ using System;
 
 public sealed class UnoDimensional : ArrayBase
 {
-    private int length;
+    private int _length;
     private int[] _array;
     private bool choice;
 
-    public UnoDimensional(int Length)
+    public UnoDimensional(int length)
     {
-        length = Length;
+        _length = length;
+        _array = new int[length];
         Create();
     }
 
-    public override void Create()
+    public override void RandFill()
     {
-        _array = new int[length];
         Random rand = new Random();
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < _length; i++)
         {
             _array[i] = rand.Next(-200, 200);
         }
     }
 
+    public override void HandFill()
+    {
+        for (int i = 0; i < _length; i++)
+        {
+            _array[i] = int.Parse(Console.ReadLine());
+        }
+    }
+
     public override void Print()
     {
-        Console.WriteLine("Array:");
+        Console.WriteLine("\nuno array:");
         Console.WriteLine(string.Join(" ", _array));
     }
 

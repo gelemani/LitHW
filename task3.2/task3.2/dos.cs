@@ -7,16 +7,15 @@ public sealed class DosDimensional : ArrayBase
     private int[,] _array;
     private bool choice;
 
-    public DosDimensional(int Rows, int Columns)
+    public DosDimensional(int rows, int columns)
     {
-        rows = Rows;
-        columns = Columns;
+        _array = new int[rows, columns];
         Create();
     }
 
-    public override void Create()
+
+    public override void RandFill()
     {
-        _array = new int[rows, columns];
         Random rand = new Random();
         for (int i = 0; i < _array.GetLength(0); i++)
         {
@@ -28,6 +27,17 @@ public sealed class DosDimensional : ArrayBase
         }
     }
 
+    public override void HandFill()
+    {
+        for (int i = 0; i < _array.GetLength(0); i++)
+        {
+            for (int j = 0; j < _array.GetLength(1); j++)
+            {
+                _array[i, j] = int.Parse(Console.ReadLine());
+            }
+            Console.WriteLine();
+        }
+    }
 
     public override void MiddleValue()
     {
@@ -44,7 +54,7 @@ public sealed class DosDimensional : ArrayBase
 
     public override void Print()
     {
-        Console.WriteLine("Array:");
+        Console.WriteLine("\ndos array:");
         for (int i = 0; i < _array.GetLength(0); i++)
         {
             Console.Write($"Row {i}: ");
