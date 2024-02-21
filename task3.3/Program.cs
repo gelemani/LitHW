@@ -13,5 +13,8 @@ class Program
             item.Print();
             item.MiddleValue();
         }
+        Console.WriteLine("\n-----------------------------------------------------------------------");   
+        var week = new Weekdays();
+        week.Print();
     }
 }

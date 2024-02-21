@@ -1,7 +1,12 @@
 using System;
 
+public interface IDosDimensional : IArrayBase
+{
+    void Snake();
+}
 
-public sealed class DosDimensional : ArrayBase
+
+public sealed class DosDimensional : ArrayBase, IDosDimensional
 {
     private int rows, columns;
     private int[,] _array;
@@ -34,6 +39,34 @@ public sealed class DosDimensional : ArrayBase
             for (int j = 0; j < _array.GetLength(1); j++)
             {
                 _array[i, j] = int.Parse(Console.ReadLine());
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public void Snake()
+    {
+        Console.WriteLine("Rows in reverse order:");
+        int s = _array.GetLength(0);
+        int c = _array.GetLength(1);
+        int j = 0;
+        for (int i = 0; i < s; i++)
+        {
+            if (i % 2 == 0)
+            {
+                j = c - 1;
+                for (; j > -1; j--)
+                {
+                    Console.Write(_array[i, j] + " ");
+                }
+            }
+            else
+            {
+                j = 0;
+                for (; j < c; j++)
+                {
+                    Console.Write(_array[i, j] + " ");
+                }
             }
             Console.WriteLine();
         }

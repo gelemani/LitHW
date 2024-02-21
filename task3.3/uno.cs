@@ -1,14 +1,17 @@
 using System;
 
-public sealed class UnoDimensional : ArrayBase
+public interface IUnoDimensional : IArrayBase
 {
-    private int _length;
+    void DeleteDuplicates();
+}
+
+public sealed class UnoDimensional : ArrayBase, IUnoDimensional
+{
     private int[] _array;
     private bool choice;
 
     public UnoDimensional(int length)
     {
-        _length = length;
         _array = new int[length];
         Create();
     }
@@ -16,7 +19,7 @@ public sealed class UnoDimensional : ArrayBase
     public override void RandFill()
     {
         Random rand = new Random();
-        for (int i = 0; i < _length; i++)
+        for (int i = 0; i < _array.Length; i++)
         {
             _array[i] = rand.Next(-200, 200);
         }
@@ -24,10 +27,45 @@ public sealed class UnoDimensional : ArrayBase
 
     public override void HandFill()
     {
-        for (int i = 0; i < _length; i++)
+        for (int i = 0; i < _array.Length; i++)
         {
             _array[i] = int.Parse(Console.ReadLine());
         }
+    }
+
+    public void DeleteDuplicates()
+    {
+        int n = _array.Length;
+        for (int i = 0; i < _array.Length; i++)
+        {
+            for (int it = 0; it < _array.Length; it++)
+            {
+                if (_array[i] == _array[it] && it != i && it > i)
+                {
+                    n--;
+                }
+            }
+        }
+        int[] newArray = new int[n];
+        int newIndex = 0;
+        for (int i = 0; i < _array.Length; i++)
+        {
+            bool isDuplicate = false;
+            for (int it = 0; it < i; it++)
+            {
+                if (_array[i] == _array[it])
+                {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate)
+            {
+                newArray[newIndex] = _array[i];
+                newIndex++;
+            }
+        }
+        _array = newArray;
     }
 
     public override void Print()

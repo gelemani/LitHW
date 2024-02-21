@@ -1,5 +1,9 @@
 using System;
 
+public interface IJaggedDimensional : IArrayBase
+{
+    void ChangeChet();
+}
 
 public sealed class JaggedDimensional : ArrayBase
 {
@@ -41,6 +45,21 @@ public sealed class JaggedDimensional : ArrayBase
             Console.WriteLine();
         }
     }
+
+    public void ChangeChet()
+    {
+        for (int i = 0; i < _array.Length; i++)
+        {
+            for (int j = 0; j < _array[i].Length; j++)
+            {
+                if (_array[i][j] % 2 == 0)
+                {
+                    _array[i][j] = _array[i][j] * j;
+                }
+            }
+        }
+    }
+
 
     public override void MiddleValue()
     {
