@@ -8,7 +8,6 @@ public interface IDosDimensional : IArrayBase
 
 public sealed class DosDimensional : ArrayBase, IDosDimensional
 {
-    private int rows, columns;
     private int[,] _array;
     private bool choice;
 
@@ -19,7 +18,7 @@ public sealed class DosDimensional : ArrayBase, IDosDimensional
     }
 
 
-    public override void RandFill()
+    protected override void RandFill()
     {
         Random rand = new Random();
         for (int i = 0; i < _array.GetLength(0); i++)
@@ -32,7 +31,7 @@ public sealed class DosDimensional : ArrayBase, IDosDimensional
         }
     }
 
-    public override void HandFill()
+    protected override void HandFill()
     {
         for (int i = 0; i < _array.GetLength(0); i++)
         {

@@ -5,9 +5,8 @@ public interface IJaggedDimensional : IArrayBase
     void ChangeChet();
 }
 
-public sealed class JaggedDimensional : ArrayBase
+public sealed class JaggedDimensional : ArrayBase, IJaggedDimensional
 {
-    private int rows;
     private int[][] _array;
     private bool choice;
 
@@ -17,7 +16,7 @@ public sealed class JaggedDimensional : ArrayBase
         Create();
     }
 
-    public override void RandFill()
+    protected override void RandFill()
     {
         Random rand = new Random();
         for (int i = 0; i < _array.Length; i++)
@@ -32,9 +31,9 @@ public sealed class JaggedDimensional : ArrayBase
         }
     }
 
-    public override void HandFill()
+    protected override void HandFill()
     {
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < _array.Length; i++)
         {
             Console.WriteLine($"How much element in {i + 1} podmassive: ");
             _array[i] = new int[int.Parse(Console.ReadLine())];

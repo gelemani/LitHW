@@ -15,6 +15,16 @@ class Program
         }
         Console.WriteLine("\n-----------------------------------------------------------------------");   
         var week = new Weekdays();
-        week.Print();
+        IUnoDimensional unoDim = (IUnoDimensional)ab[0];
+        unoDim.DeleteDuplicates();  
+        IDosDimensional dosDim = (IDosDimensional)ab[1];
+        IJaggedDimensional jagDim = (IJaggedDimensional)ab[2];
+        jagDim.ChangeChet();
+
+        IPrinter[] pr = new IPrinter[4] { unoDim, dosDim, jagDim, week };
+        foreach (var item in pr)
+        {
+            item.Print();
+        }
     }
 }

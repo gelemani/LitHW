@@ -1,15 +1,15 @@
 using System;
 
-public abstract class ArrayBase : IArrayBase, IPrinter
+public abstract class ArrayBase : IArrayBase
 {
     public abstract void MiddleValue();
     public abstract void Print();
 
-    public abstract void RandFill();
-    public abstract void HandFill();
+    protected abstract void RandFill();
+    protected abstract void HandFill();
 
     public virtual void Create()
-    {
+    { 
         Console.WriteLine("Manual(0) or automate(1) ? ");
         int a = int.Parse(Console.ReadLine());
         bool choice = a == 0 ? choice = true : false;

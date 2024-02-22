@@ -16,7 +16,7 @@ public sealed class UnoDimensional : ArrayBase, IUnoDimensional
         Create();
     }
 
-    public override void RandFill()
+    protected override void RandFill()
     {
         Random rand = new Random();
         for (int i = 0; i < _array.Length; i++)
@@ -25,7 +25,7 @@ public sealed class UnoDimensional : ArrayBase, IUnoDimensional
         }
     }
 
-    public override void HandFill()
+    protected override void HandFill()
     {
         for (int i = 0; i < _array.Length; i++)
         {

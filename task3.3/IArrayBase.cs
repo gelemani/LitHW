@@ -1,4 +1,4 @@
-public interface IArrayBase
+public interface IArrayBase : IPrinter
 {
     void MiddleValue();
     void Create();
