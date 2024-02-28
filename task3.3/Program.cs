@@ -21,7 +21,7 @@ class Program
         IJaggedDimensional jagDim = (IJaggedDimensional)ab[2];
         jagDim.ChangeChet();
 
-        IPrinter[] pr = new IPrinter[4] { unoDim, dosDim, jagDim, week };
+        IPrinter[] pr = { unoDim, dosDim, jagDim, week };
         foreach (var item in pr)
         {
             item.Print();
