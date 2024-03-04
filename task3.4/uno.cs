@@ -5,7 +5,7 @@ public interface IUnoDimensional : IArrayBase
     void DeleteDuplicates();
 }
 
-public sealed class UnoDimensional : ArrayBase, IUnoDimensional
+public sealed class UnoDimensional<T> : ArrayBase, IUnoDimensional
 {
     private int[] _array;
     private bool choice;

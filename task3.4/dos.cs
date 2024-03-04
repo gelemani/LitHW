@@ -6,7 +6,7 @@ public interface IDosDimensional : IArrayBase
 }
 
 
-public sealed class DosDimensional : ArrayBase, IDosDimensional
+public sealed class DosDimensional<T> : ArrayBase, IDosDimensional
 {
     private int[,] _array;
     private bool choice;
