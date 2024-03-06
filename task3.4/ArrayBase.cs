@@ -2,24 +2,20 @@ using System;
 
 public abstract class ArrayBase : IArrayBase
 {
-    public abstract void MiddleValue();
     public abstract void Print();
 
-    protected abstract void RandFill();
-    protected abstract void HandFill();
-
-    public virtual void Create()
+    public virtual int Create()
     { 
         Console.WriteLine("Manual(0) or automate(1) ? ");
         int a = int.Parse(Console.ReadLine());
         bool choice = a == 0 ? choice = true : false;
         if (!choice)
         {
-            RandFill();
+            return 1;
         }
         else
         {
-            HandFill();
+            return 0;
         }
     }
 }
