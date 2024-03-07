@@ -6,4 +6,9 @@ class IntValueProvider : IArrayFill<int>
     {
         return random.Next(0, 101);
     }
+
+    public int GetUserValue()
+    {
+        return int.Parse(Console.ReadLine);
+    }
 }
