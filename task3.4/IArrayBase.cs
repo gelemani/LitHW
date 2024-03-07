@@ -1,4 +1,4 @@
 public interface IArrayBase : IPrinter
 {
-    int Create();
+    void Create();
 }

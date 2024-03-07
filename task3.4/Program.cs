@@ -4,17 +4,31 @@ class Program
 {
     public static void Main(string[] args)
     {
-        ArrayBase[] ab = new ArrayBase[2];
-        int length = 5;
+        int rows = 5;
+        int columns = 4;
 
-        IArrayFill<int> fill = new IntValueProvider();
+        IValueProvider<int> fillInt = new IntValueProvider();
+        IValueProvider<double> fillDouble = new DoubleValueProvider();
+        IValueProvider<bool> fillBool = new BoolValueProvider();
+        IValueProvider<string> fillString = new StringValueProvider();
 
-        IArray<int> unoArrayInt = new UnoDimensional<int>(length, fill);
-        unoArrayInt.Print();
+        //Uno
+        IArray<int> unoArrayInt = new UnoDimensional<int>(rows, fillInt);
+        IArray<double> unoArrayDouble = new UnoDimensional<double>(rows, fillDouble);
+        IArray<bool> unoArrayBool = new UnoDimensional<bool>(rows, fillBool);
+        IArray<string> unoArrayString = new UnoDimensional<string>(rows, fillString);
 
-        UnoDimensional<double> UnoDimensionalDouble = new UnoDimensional<double>(5);
-        UnoDimensional<bool> UnoDimensionalBool = new UnoDimensional<bool>(5);
-        UnoDimensional<string> UnoDimensionalString = new UnoDimensional<string>(5);
+        //Dos
+        IArray<int> dosArrayInt = new DosDimensional<int>(rows, columns, fillInt);
+        IArray<double> dosArrayDouble = new DosDimensional<double>(rows, columns, fillDouble);
+        IArray<bool> dosArrayBool = new DosDimensional<bool>(rows, columns, fillBool);
+        IArray<string> dosArrayString = new DosDimensional<string>(rows, columns, fillString);
 
+
+        IPrinter[] printers = { unoArrayInt, unoArrayDouble, unoArrayBool, unoArrayString, dosArrayInt, dosArrayDouble, dosArrayBool, dosArrayString };
+        for (int i = 0; i < printers.Length; i++)
+        {
+            printers[i].Print();
+        }
     }
 }

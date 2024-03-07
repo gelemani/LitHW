@@ -3,6 +3,9 @@ using System;
 public abstract class ArrayBase : IArrayBase
 {
     public abstract void Print();
+    protected abstract void RandFill();
+    protected abstract void HandFill();
+
     public virtual void Create()
     { 
         Console.WriteLine("Manual(0) or automate(1) ? ");

@@ -1,4 +1,4 @@
-class IntValueProvider : IArrayFill<int>
+class IntValueProvider : IValueProvider<int>
 {
     private static Random random = new Random();
 
@@ -9,6 +9,6 @@ class IntValueProvider : IArrayFill<int>
 
     public int GetUserValue()
     {
-        return int.Parse(Console.ReadLine);
+        return int.Parse(Console.ReadLine());
     }
 }

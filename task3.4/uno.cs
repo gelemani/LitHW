@@ -2,17 +2,16 @@ using System;
 
 
 
-public sealed class UnoDimensional<T> : ArrayBase
+public sealed class UnoDimensional<T> : ArrayBase, IArray<T>
 {
     private T[] _array;
-    private bool choice;
-    private IArrayFill<T> _fill;
+    private IValueProvider<T> _fill;
 
-    public UnoDimensional(int length, IArrayFill<T> fill)
+    public UnoDimensional(int length, IValueProvider<T> fill)
     {
         _array = new T[length];
-        IArrayFill(length);
         _fill = fill;
+        Create();
     }
 
     protected override void RandFill()
@@ -32,10 +31,9 @@ public sealed class UnoDimensional<T> : ArrayBase
         }
     }
 
-
     public override void Print()
     {
-        Console.WriteLine("\nuno array:");
+        Console.WriteLine($"\n{typeof(T)} uno array:");
         Console.WriteLine(string.Join(" ", _array));
     }
 }
