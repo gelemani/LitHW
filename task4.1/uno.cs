@@ -6,9 +6,9 @@ public class UnoDimensional<T>
     private T[] _array;
     private IValueProvider<T> _fill;
 
-    public UnoDimensional(int length, IValueProvider<T> fill)
+    public UnoDimensional(int defaultLength, IValueProvider<T> fill)
     {
-        _array = new T[length];
+        _array = new T[defaultLength];
         _fill = fill;
         Create();
     }

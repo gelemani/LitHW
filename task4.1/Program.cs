@@ -5,6 +5,11 @@ class Program
 {
     public static void Main(string[] args)
     {
+        int defaultLength = 7;
+
+        // IValueProvider<int> fillInt = new IntValueProvider();
+        IArray<int> unoArrayInt = new UnoDimensional<int>(defaultLength, fillInt);
+
         Message message = Hello;
         message += HowAreYou;  // теперь message указывает на два метода
         message();              // вызываются оба метода - Hello и HowAreYou
