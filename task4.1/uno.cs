@@ -5,16 +5,30 @@ public class UnoDimensional<T>
 {
     private T[] _array;
     private IValueProvider<T> _fill;
+    delegate void Fill();
 
-    public UnoDimensional(int defaultLength, IValueProvider<T> fill)
+    public UnoDimensional(int defaultLength)
     {
         _array = new T[defaultLength];
-        _fill = fill;
+        Fill _fill;
         Create();
     }
+   
+    private static Random random = new Random();    
+
+    public int GetRandomValue()
+    {
+        return random.Next(0, 101);
+    }
+
+    public int GetUserValue()
+    {
+        return int.Parse(Console.ReadLine());
+    }
+   
 
     protected override void RandFill()
-    {
+    { 
         Random rand = new Random();
         for (int i = 0; i < _array.Length; i++)
         {
