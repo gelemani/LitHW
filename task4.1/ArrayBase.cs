@@ -1,8 +1,6 @@
 using System;
 
-public abstract class ArrayBase : IArrayBase
+public abstract class ArrayBase
 {
     public abstract void Print();
-    protected abstract void RandFill();
-    protected abstract void HandFill();
 }
