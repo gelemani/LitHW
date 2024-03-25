@@ -4,45 +4,32 @@ namespace task4._1;
 public class UnoDimensional<T>
 {
     private T[] _array;
-    private IValueProvider<T> _fill;
-    delegate void Fill();
 
-    public UnoDimensional(int defaultLength)
+    public UnoDimensional()
     {
-        _array = new T[defaultLength];
-        Fill _fill;
+        _array = new T[7];
         Create();
     }
-   
-    private static Random random = new Random();    
-
-    public int GetRandomValue()
+    
+    public T[] Add(T element)
     {
-        return random.Next(0, 101);
+        
     }
 
-    public int GetUserValue()
+    public T[] Where(Func<T, bool> condition)
     {
-        return int.Parse(Console.ReadLine());
-    }
-   
-
-    protected override void RandFill()
-    { 
-        Random rand = new Random();
+        T[] _arr = new T[_array.Length];
+        int count = 0;
         for (int i = 0; i < _array.Length; i++)
         {
-            _array[i] = _fill.GetRandomValue();
+            if (condition(arr[i]))
+            {
+                _arr[count++] = _array[i];
+            }
         }
-    }
-
-    protected override void HandFill()
-    {
-        for (int i = 0; i < _array.Length; i++)
-        {
-            _array[i] = _fill.GetUserValue();
-        }
-    }
+        Array.Resize(_arr, count);
+        return _arr;
+    } 
 
     public override void Print()
     {
