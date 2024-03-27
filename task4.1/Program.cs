@@ -8,7 +8,7 @@ class Program
     public static void Main(string[] args)
     {
         UnoDimensional<int> unoInt = new(5);
-        unoInt.Add(1);
+        unoInt.Add(3213);
         unoInt.Add(123);
         unoInt.Add(1);
         unoInt.Add(1);
@@ -21,7 +21,10 @@ class Program
         unoInt.Sorting();
         unoInt.Print();
 
-        Console.WriteLine(string.Join(",", unoInt.Where(x => x > 1)));
+        unoInt.Remove(10);
+        unoInt.Print();
+
+        Console.WriteLine(unoInt.Where((x) => x % 2 == 1));
 
         // int[] numbers = unoInt.Where( (x) => {});
         // Console.WriteLine(string.Join(' ', numbers));
