@@ -5,11 +5,16 @@ namespace task4._1;
 public class UnoDimensional<T> : ArrayBase
 {
     private T[] _array;
+    private int _size, _capacity;
 
-    public UnoDimensional(T[] array)
+    public UnoDimensional(int capacity)
     {
-        _array = array;      
+        _capacity = capacity;
+        _size = 0;
+        _array = new T[_capacity];
     }
+
+    public UnoDimensional() : this(7) {}
 
     public T[] Where(Func<T, bool> condition)
     {
@@ -26,11 +31,16 @@ public class UnoDimensional<T> : ArrayBase
         return _arr;
     }
 
-    public T[] Add(T element)
+    public void Add(T element)
     {
-        T[] _arr = new T[_array.Length + 1];
-        _arr[_arr.Length - 1] = element;    
-        return _arr;
+        if (_size >= _capacity)
+        {
+            _capacity = _capacity * 2 + 1;
+            T[] newArray = new T[_capacity];
+            Array.Copy(newArray, 0, _array, 0, _size);
+            _array = newArray;
+        }
+        _array[_size++] = element;
     }
 
     public T[] Remove(T element)
