@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-
 namespace task4._1;
+
 class Program
 {
     public static void Main(string[] args)
