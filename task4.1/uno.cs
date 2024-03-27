@@ -92,6 +92,35 @@ public class UnoDimensional<T> : ArrayBase
         return _arr;
     }
 
+
+    public void FillArray<T> (Func<T> fillRandFunc)
+    {
+        for (int i = 0; i < _array.Length; i++)
+        {
+            _array[i] = fillRandFunc();                                // ???????????????????????????????????????????????????????????????????????????????????????
+        }
+    }
+
+    public static void PrintArrayWithCondition<T> (T[] array, Func<T, bool> conditionFunc)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (conditionFunc(array[i]))
+            {
+                Console.Write(array[i] + " ");
+            }
+        }
+        Console.WriteLine();
+    }
+
+    public static void ForEachAction<T> (T[] array, Action<T> action)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            action(array[i]);
+        }
+    }
+
     public override void Print()
     {
         Console.WriteLine($"\n{typeof(T)} uno array:");

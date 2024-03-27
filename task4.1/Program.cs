@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
@@ -8,11 +9,7 @@ class Program
     public static void Main(string[] args)
     {
         UnoDimensional<int> unoInt = new(5);
-        unoInt.Add(3213);
-        unoInt.Add(123);
-        unoInt.Add(1);
-        unoInt.Add(1);
-        unoInt.Add(1000);
+        FillArray(unoInt, () => Random.Shared.Next(0, 501));
         unoInt.Print();
 
         unoInt.Reverse();
@@ -28,5 +25,10 @@ class Program
 
         // int[] numbers = unoInt.Where( (x) => {});
         // Console.WriteLine(string.Join(' ', numbers));
+    }
+
+    private static void FillArray(UnoDimensional<int> unoInt, Func<int> value)
+    {
+        throw new NotImplementedException();
     }
 }
