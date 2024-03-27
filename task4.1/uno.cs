@@ -1,7 +1,6 @@
 using System;
-
-
 namespace task4._1;
+
 public class UnoDimensional<T> : ArrayBase
 {
     private T[] _array;
