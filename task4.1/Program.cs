@@ -9,7 +9,7 @@ class Program
     public static void Main(string[] args)
     {
         UnoDimensional<int> unoInt = new(5);
-        FillArray(unoInt, () => Random.Shared.Next(0, 501));
+        FillArray(() => Random.Shared.Next(0, 501));
         unoInt.Print();
 
         unoInt.Reverse();
