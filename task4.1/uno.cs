@@ -43,31 +43,47 @@ public class UnoDimensional<T> : ArrayBase
         _array[_size++] = element;
     }
 
-    public T[] Remove(T element)
-    {
-        T[] _arr = new T[_array.Length - 1];
-        for (int i = 0; i < _arr.Length; i++)
-        {
-            if (_arr[i] == element)
-            {
-                continue;
-            }
-            _arr[i] = _array[i];
-        }
-        Array.Resize(ref _arr, _arr.Length - 1);
-        return _arr;
-    }
+    //public T[] Remove(T element)
+    //{
+    //    T[] _arr = new T[_array.Length - 1];
+    //    for (int i = 0; i < _arr.Length; i++)
+    //    {
+    //        if (_arr[i] == element)
+    //        {
+    //            continue;
+    //        }
+    //        _arr[i] = _array[i];
+    //    }
+    //    Array.Resize(ref _arr, _arr.Length - 1);
+    //    return _arr;
+    //}
 
 
     public T[] Reverse()
     {
-        T[] _arr = new T[_array.Length];
-        int count = 0;
-        for (int i = _arr.Length; i >= 0; i--)
+        T[] newArray = new T[_capacity];
+        newArray = _array;
+        T count = default(T);
+
+        try
         {
-            _arr[i] = _array[count++];
+            for (int i = 0; i < (newArray.Length / 2); i++)
+            {
+                count = newArray[i];
+                newArray[i] = newArray[newArray.Length - i - 1];
+                newArray[newArray.Length - i - 1] = count;
+            }
+            return newArray;
         }
-        return _arr;
+        catch
+        {
+             return _array;
+        }
+    }
+
+    public void Sorting()
+    {
+        Array.Sort(_array);
     }
 
     public override void Print()
