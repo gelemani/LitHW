@@ -152,7 +152,7 @@ public class UnoDimensional<T> : ArrayBase
                 return element;
             }
         }
-        Console.WriteLine("����� ��������� ���");
+        Console.WriteLine("There are no matching elements here");
         return (T)Convert.ChangeType(-1, typeof(T));
     }
 
