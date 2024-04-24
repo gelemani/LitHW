@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="task4._3.MainWindow"
+        Title="Avalonia"
+        Width="800" 
+        Height="600"
+        CanResize="False">
+    
+    <Grid ShowGridLines="True"
+        RowDefinitions="auto,*,auto"
+        ColumnDefinitions="auto,*"
+        Background="#E1CEB1"> 
+
+        <DockPanel Grid.Row="0"
+               Grid.ColumnSpan="5">
+            <TextBlock>Home</TextBlock>
+            <TextBlock>About</TextBlock>
+            <TextBlock>Blogs's Main Topic 1</TextBlock>
+            <TextBlock>Blogs's Main Topic 2</TextBlock>
+            <TextBlock>Blogs's Main Topic 3</TextBlock>
+            <TextBlock>Associated blogs</TextBlock>
+            <TextBlock DockPanel.Dock="Right" TextAlignment="Right">RSS</TextBlock>
+        </DockPanel>
+
+    </Grid> 
+</Window>
