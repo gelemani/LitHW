@@ -4,25 +4,53 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="task4._3.MainWindow"
-        Title="Avalonia"
-        Width="800" 
-        Height="600"
+        Title="Lorem ipsum"
+        Width="1280" 
+        Height="790"
         CanResize="False">
     
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="Margin" Value="0,0,20,0"></Setter>
+      <Setter Property="Padding" Value="5,0"></Setter>
+      <Setter Property="FontSize" Value="16"></Setter> 
+      <Setter Property="FontWeight" Value="Medium"></Setter>
+    </Style>
+    <!-- <Style Selector="DockPanel TextBlock">
+      <Setter Property="Margin" Value="25"></Setter>
+    </Style>
+    <Style Selector="ScrollViewer StackPanel">
+      <Setter Property="Margin" Value="12"></Setter>
+    </Style>
+    <Style Selector="Image">
+      <Setter Property="Margin" Value="25"></Setter>
+    </Style>
+    <Style Selector="ScrollViewer TextBlock:pointerover">
+      <Setter Property="Foreground" Value="Blue"></Setter>
+    </Style>  -->
+  </Window.Styles>
+
     <Grid ShowGridLines="True"
         RowDefinitions="auto,*,auto"
         ColumnDefinitions="auto,*"
-        Background="#E1CEB1"> 
+        Background="#212121"> <!-- Dark gray background -->
 
         <DockPanel Grid.Row="0"
-               Grid.ColumnSpan="5">
-            <TextBlock>Home</TextBlock>
-            <TextBlock>About</TextBlock>
-            <TextBlock>Blogs's Main Topic 1</TextBlock>
-            <TextBlock>Blogs's Main Topic 2</TextBlock>
-            <TextBlock>Blogs's Main Topic 3</TextBlock>
-            <TextBlock>Associated blogs</TextBlock>
-            <TextBlock DockPanel.Dock="Right" TextAlignment="Right">RSS</TextBlock>
+               Grid.ColumnSpan="5"
+               Margin="12"
+               Background="#333333"> <!-- Darker gray background  -->
+
+            <TextBlock Foreground="#66CCCC">Home</TextBlock> <!-- Light blue text -->
+            <TextBlock Foreground="#FFC080">About</TextBlock> <!-- Orange text -->
+            <TextBlock Foreground="#33CC33">Blogs's Main Topic 1</TextBlock> <!-- Green text -->
+            <TextBlock Foreground="#FF69B4">Blogs's Main Topic 2</TextBlock> <!-- Pink text -->
+            <TextBlock Foreground="#0099CC">Blogs's Main Topic 3</TextBlock> <!-- Blue text -->
+            <TextBlock Foreground="#FFFF66">Associated blogs</TextBlock> <!-- Yellow text -->
+            <TextBlock Margin="0,0,40,0"
+                        Foreground="#FF0000"
+                        DockPanel.Dock="Right" 
+                        TextAlignment="Right">RSS</TextBlock> <!-- Red text -->
+
         </DockPanel>
 
     </Grid> 
