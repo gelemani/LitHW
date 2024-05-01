@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -31,3 +32,38 @@ public class ViewLocator : IDataTemplate
         return data is ViewModelBase;
     }
 }
+=======
+using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using task4._4.ViewModels;
+
+namespace task4._4;
+
+public class ViewLocator : IDataTemplate
+{
+
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+        
+        var name = data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+        var type = Type.GetType(name);
+
+        if (type != null)
+        {
+            var control = (Control)Activator.CreateInstance(type)!;
+            control.DataContext = data;
+            return control;
+        }
+        
+        return new TextBlock { Text = "Not Found: " + name };
+    }
+
+    public bool Match(object? data)
+    {
+        return data is ViewModelBase;
+    }
+}
+>>>>>>> f197af6d54fdb7e6bcf3e3d3ae7dd35aa8ac474e
