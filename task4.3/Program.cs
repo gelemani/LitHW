@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using System;
+using Avalonia.Media.Imaging;
 
 namespace task4._3
 {
@@ -18,6 +19,8 @@ namespace task4._3
                 .UsePlatformDetect()
                 .WithInterFont()
                 .LogToTrace();
+
+        public Bitmap Image { get; set; } = new Bitmap("petya.png");
     }
 }
 
