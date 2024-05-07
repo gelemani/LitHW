@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -43,9 +43,8 @@
         Background="{StaticResource PrimaryColor}">
 
       <DockPanel Grid.Row="0"
-                Grid.ColumnSpan="5"
-                Margin="12"
-                Background="{StaticResource SecondaryColor}">
+                 Grid.ColumnSpan="5"
+                 Background="{StaticResource SecondaryColor}">
 
           <TextBlock Foreground="{StaticResource LightBlueColor}">Home</TextBlock>
           <TextBlock Foreground="{StaticResource OrangeColor}">About</TextBlock>
@@ -54,9 +53,9 @@
           <TextBlock Foreground="{StaticResource BlueColor}">Blogs's Main Topic 3</TextBlock>
           <TextBlock Foreground="{StaticResource YellowColor}">Associated blogs</TextBlock>
           <TextBlock Foreground="{StaticResource RedColor}"
-                    Margin="0,10,40,10"
-                    DockPanel.Dock="Right"
-                    TextAlignment="Right">RSS</TextBlock>
+                     Margin="0,10,40,10"
+                     DockPanel.Dock="Right"
+                     TextAlignment="Right">RSS</TextBlock>
       </DockPanel>
 
       <StackPanel Orientation="Vertical"
@@ -70,13 +69,9 @@
               Donec congue est quam, nec efficitur lorem mattis varius. Proin feugiat elit ut quam sagittis, ac volutpat erat aliquam. Vestibulum ultricies erat ut elit rutrum, id lobortis urna vehicula. Maecenas euismod ornare ante eget imperdiet. Nunc placerat pretium ultricies. Maecenas vehicula, massa ut aliquam facilisis, orci sapien pharetra nisi, quis dapibus quam sem in odio. Suspendisse placerat tortor id convallis congue. Curabitur dapibus finibus leo, at suscipit arcu porta sit amet. Sed facilisis neque a mi maximus efficitur.
               Praesent sed sapien felis. Vivamus et tellus nibh. Ut vestibulum nulla sed dolor egestas venenatis. Proin vestibulum blandit iaculis.
           </TextBlock>
-          <Image Source="avares://AvaloniaControls/Assets/pipes.jpg"/>
-                            Height="500"
-                            Width="500"
-                            Stretch="Uniform"
-                            HorizontalAlignment="Center"/>          
+                  
       </StackPanel>
-
+ 
       <StackPanel Orientation="Vertical"
                   Grid.Column="1"
                   Grid.Row="1">
@@ -93,6 +88,19 @@
           <TextBlock TextAlignment="Right" TextDecorations="Underline" Margin="0, 0, 0, 0">More</TextBlock>
           <TextBlock TextAlignment="Right" Margin="0, 5, 0, 0">1 week ago</TextBlock>
       </StackPanel>
+
+      <DockPanel Grid.Row="2"
+                 Grid.ColumnSpan="5"
+				 DockPanel.Dock="Bottom"
+                 Background="{StaticResource SecondaryColor}">
+
+          <TextBlock Padding="2,0" Foreground="{StaticResource LightBlueColor}">Tags:</TextBlock>
+          <TextBlock Padding="2,0" Foreground="{StaticResource OrangeColor}">Tag 1</TextBlock>
+          <TextBlock Padding="2,0" Foreground="{StaticResource GreenColor}">Tag 2</TextBlock>
+          <TextBlock Padding="2,0" Foreground="{StaticResource PinkColor}">Tag 3</TextBlock>
+          <TextBlock Padding="2,0" Foreground="{StaticResource BlueColor}">Tag 4</TextBlock>
+          <TextBlock Margin="300,10,20,10" Foreground="{StaticResource YellowColor}">Rate this article</TextBlock>
+      </DockPanel>
   </Grid>
 
 </Window>
