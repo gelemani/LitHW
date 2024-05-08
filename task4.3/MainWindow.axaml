@@ -6,7 +6,7 @@
         x:Class="task4._3.MainWindow"
         Title="Lorem ipsum"
         Width="1280" 
-        Height="790"
+        Height="800"
         CanResize="False">
 
 
@@ -37,7 +37,7 @@
     </ResourceDictionary>
 </Window.Resources>
 
-  <Grid ShowGridLines="True"
+  <Grid ShowGridLines="False"
         RowDefinitions="auto,*,auto"
         ColumnDefinitions="950,310"
         Background="{StaticResource PrimaryColor}">
@@ -69,8 +69,8 @@
               Donec congue est quam, nec efficitur lorem mattis varius. Proin feugiat elit ut quam sagittis, ac volutpat erat aliquam. Vestibulum ultricies erat ut elit rutrum, id lobortis urna vehicula. Maecenas euismod ornare ante eget imperdiet. Nunc placerat pretium ultricies. Maecenas vehicula, massa ut aliquam facilisis, orci sapien pharetra nisi, quis dapibus quam sem in odio. Suspendisse placerat tortor id convallis congue. Curabitur dapibus finibus leo, at suscipit arcu porta sit amet. Sed facilisis neque a mi maximus efficitur.
               Praesent sed sapien felis. Vivamus et tellus nibh. Ut vestibulum nulla sed dolor egestas venenatis. Proin vestibulum blandit iaculis.
           </TextBlock>
-                  
-      </StackPanel>
+		  <Image Height="320" Width="280" Source="/Assets/petya.jpg"></Image>
+	  </StackPanel>
  
       <StackPanel Orientation="Vertical"
                   Grid.Column="1"
@@ -87,19 +87,35 @@
           </TextBlock>
           <TextBlock TextAlignment="Right" TextDecorations="Underline" Margin="0, 0, 0, 0">More</TextBlock>
           <TextBlock TextAlignment="Right" Margin="0, 5, 0, 0">1 week ago</TextBlock>
+	  
       </StackPanel>
 
       <DockPanel Grid.Row="2"
-                 Grid.ColumnSpan="5"
+                 Grid.Column="0"
 				 DockPanel.Dock="Bottom"
                  Background="{StaticResource SecondaryColor}">
 
-          <TextBlock Padding="2,0" Foreground="{StaticResource LightBlueColor}">Tags:</TextBlock>
-          <TextBlock Padding="2,0" Foreground="{StaticResource OrangeColor}">Tag 1</TextBlock>
-          <TextBlock Padding="2,0" Foreground="{StaticResource GreenColor}">Tag 2</TextBlock>
-          <TextBlock Padding="2,0" Foreground="{StaticResource PinkColor}">Tag 3</TextBlock>
-          <TextBlock Padding="2,0" Foreground="{StaticResource BlueColor}">Tag 4</TextBlock>
-          <TextBlock Margin="300,10,20,10" Foreground="{StaticResource YellowColor}">Rate this article</TextBlock>
+          <TextBlock Padding="2,0" Foreground="{StaticResource LightBlueColor}"
+					 VerticalAlignment="Center"
+		             Margin="0,10,10,10">Tags:</TextBlock>
+          <TextBlock Padding="2,0" Foreground="{StaticResource OrangeColor}"
+					 VerticalAlignment="Center"
+		             Margin="0,10,8,10">Tag 1 Tag 2 Tag 3 Tag 4</TextBlock>
+
+          <StackPanel DockPanel.Dock="Right" 
+					  Orientation="Horizontal"
+			          HorizontalAlignment="Right"
+			          VerticalAlignment="Center">
+            <TextBlock Padding="2,0" Foreground="{StaticResource YellowColor}" 
+					   Margin="0,10,20,10">Rate this article</TextBlock>
+            <ComboBox Margin="0, 0, 0, 0" Padding="0" FontSize="14">
+              <ComboBoxItem>1</ComboBoxItem>
+              <ComboBoxItem>2</ComboBoxItem>
+              <ComboBoxItem>3</ComboBoxItem>
+              <ComboBoxItem>4</ComboBoxItem>
+              <ComboBoxItem>5</ComboBoxItem>
+            </ComboBox>
+          </StackPanel>
       </DockPanel>
   </Grid>
 
