@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="task4._4.App"
@@ -13,20 +12,4 @@
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
-=======
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="task4._4.App"
-             xmlns:local="using:task4._4"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
->>>>>>> f197af6d54fdb7e6bcf3e3d3ae7dd35aa8ac474e
 </Application>

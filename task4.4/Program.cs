@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
 using System;
@@ -22,28 +21,3 @@ sealed class Program
             .LogToTrace()
             .UseReactiveUI();
 }
-=======
-﻿using Avalonia;
-using Avalonia.ReactiveUI;
-using System;
-
-namespace task4._4;
-
-sealed class Program
-{
-    // Initialization code. Don't use any Avalonia, third-party APIs or any
-    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-    // yet and stuff might break.
-    [STAThread]
-    public static void Main(string[] args) => BuildAvaloniaApp()
-        .StartWithClassicDesktopLifetime(args);
-
-    // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .WithInterFont()
-            .LogToTrace()
-            .UseReactiveUI();
-}
->>>>>>> f197af6d54fdb7e6bcf3e3d3ae7dd35aa8ac474e
