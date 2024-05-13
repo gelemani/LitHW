@@ -1,4 +1,4 @@
-namespace task4._4;
+namespace task4._4.Models;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 
