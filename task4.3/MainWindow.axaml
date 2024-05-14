@@ -1,4 +1,4 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -92,7 +92,7 @@
 
       <DockPanel Grid.Row="2"
                  Grid.Column="0"
-<<<<<<< HEAD
+
 				 DockPanel.Dock="Bottom"
                  Background="{StaticResource SecondaryColor}">
 
@@ -109,7 +109,7 @@
 			          VerticalAlignment="Center">
             <TextBlock Padding="2,0" Foreground="{StaticResource YellowColor}" 
 					   Margin="0,10,20,10">Rate this article</TextBlock>
-=======
+
 		 DockPanel.Dock="Bottom"
                  Background="{StaticResource SecondaryColor}">
 
@@ -126,8 +126,8 @@
 			          VerticalAlignment="Center">
             <TextBlock Padding="2,0" Foreground="{StaticResource YellowColor}" 
 		       Margin="0,10,20,10">Rate this article</TextBlock>
->>>>>>> 02f416c3030d15a0b5906e74c835638713ae7309
-            <ComboBox Margin="0, 0, 0, 0" Padding="0" FontSize="14">
+
+           <ComboBox Margin="0, 0, 0, 0" Padding="0" FontSize="14">
               <ComboBoxItem>1</ComboBoxItem>
               <ComboBoxItem>2</ComboBoxItem>
               <ComboBoxItem>3</ComboBoxItem>
@@ -137,5 +137,4 @@
           </StackPanel>
       </DockPanel>
   </Grid>
-
 </Window>
