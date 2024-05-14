@@ -92,24 +92,6 @@
 
       <DockPanel Grid.Row="2"
                  Grid.Column="0"
-
-				 DockPanel.Dock="Bottom"
-                 Background="{StaticResource SecondaryColor}">
-
-          <TextBlock Padding="2,0" Foreground="{StaticResource LightBlueColor}"
-					 VerticalAlignment="Center"
-		             Margin="0,10,10,10">Tags:</TextBlock>
-          <TextBlock Padding="2,0" Foreground="{StaticResource OrangeColor}"
-					 VerticalAlignment="Center"
-		             Margin="0,10,8,10">Tag 1 Tag 2 Tag 3 Tag 4</TextBlock>
-
-          <StackPanel DockPanel.Dock="Right" 
-					  Orientation="Horizontal"
-			          HorizontalAlignment="Right"
-			          VerticalAlignment="Center">
-            <TextBlock Padding="2,0" Foreground="{StaticResource YellowColor}" 
-					   Margin="0,10,20,10">Rate this article</TextBlock>
-
 		 DockPanel.Dock="Bottom"
                  Background="{StaticResource SecondaryColor}">
 
@@ -126,8 +108,7 @@
 			          VerticalAlignment="Center">
             <TextBlock Padding="2,0" Foreground="{StaticResource YellowColor}" 
 		       Margin="0,10,20,10">Rate this article</TextBlock>
-
-           <ComboBox Margin="0, 0, 0, 0" Padding="0" FontSize="14">
+            <ComboBox Margin="0, 0, 0, 0" Padding="0" FontSize="14">
               <ComboBoxItem>1</ComboBoxItem>
               <ComboBoxItem>2</ComboBoxItem>
               <ComboBoxItem>3</ComboBoxItem>

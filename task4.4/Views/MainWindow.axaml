@@ -3,6 +3,7 @@
         xmlns:vm="using:task4._4.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:infrastructure="clr-namespace:task4._4.Infrastructure;assembly=task4._4"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="task4._4.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -58,30 +59,40 @@
 					   DockPanel.Dock="Right"
 					   TextAlignment="Right">RSS</TextBlock>
 		</DockPanel>
-
-		<StackPanel Orientation="Vertical"
-					Grid.Column="0"
-					Grid.Row="1"
-					ItemsSource="{Binding BlogEntities}">
-			<TextBlock TextAlignment="Left" Margin="0, 0, 0, 15" Text="{Binding Article}"/>
-			<TextBlock TextWrapping="Wrap" Text="{Binding Text}"/>
-			<Image Source="{Binding ImagePath, Converter={x:Static infrastructure:BitmapValueConverter.Instance}}" Height="320" Width="280" HorizontalAlignment="Center" />
-		</StackPanel>
 		
-		<StackPanel Orientation="Vertical"
-					Grid.Column="1"
-					Grid.Row="1"
-					ItemsSource="{Binding NewsEntities}">
+	<ListBox ItemsSource="{Binding BlogEntities}">		          
+		<ListBox.ItemTemplate>
+			<DataTemplate>
+				<StackPanel Orientation="Vertical"
+					Grid.Column="0"
+					Grid.Row="1">
+						<TextBlock TextAlignment="Left" Margin="0, 0, 0, 15" Text="{Binding Article}"/>
+						<TextBlock TextWrapping="Wrap" Text="{Binding Text}"/>
+						<Image Source="{Binding ImagePath, Converter={x:Static infrastructure:BitmapValueConverter.Instance}}" Height="320" Width="280" HorizontalAlignment="Center" />
+						<Image Source="{Binding ImagePath, Converter={x:Static infrastructure:BitmapValueConverter.Instance}}" />	
+			</StackPanel>
+			</DataTemplate>
+		</ListBox.ItemTemplate>
+	</ListBox>	
+		
+	<ListBox ItemsSource="{Binding NewsEntities}">		          
+		<ListBox.ItemTemplate>
+			<DataTemplate>
+				<StackPanel Orientation="Vertical"
+							Grid.Column="1"
+							Grid.Row="1">
+					<TextBlock TextWrapping="Wrap" Margin="0, 42, 0, 0" Text="{Binding Text}"/>
+					<TextBlock TextAlignment="Right" TextDecorations="Underline" Margin="0, 0, 0, 0">More</TextBlock>
+					<TextBlock TextAlignment="Right" Margin="0, 5, 0, 0" Text="{Binding PublishDate	}"/>
 
-			<TextBlock TextWrapping="Wrap" Margin="0, 42, 0, 0" Text="{Binding Text}"/>
-			<TextBlock TextAlignment="Right" TextDecorations="Underline" Margin="0, 0, 0, 0">More</TextBlock>
-			<TextBlock TextAlignment="Right" Margin="0, 5, 0, 0" Text="{Binding PublishDate}"/>
+					<TextBlock TextWrapping="Wrap" Text="{Binding Text}"/>
+					<TextBlock TextAlignment="Right" TextDecorations="Underline" Margin="0, 0, 0, 0">More</TextBlock>
+					<TextBlock TextAlignment="Right" Margin="0, 5, 0, 0" Text="{Binding PublishDate}"/>
+				</StackPanel>
+			</DataTemplate>
+		</ListBox.ItemTemplate>
+	</ListBox>
 
-			<TextBlock TextWrapping="Wrap" Text="{Binding Text}"/>
-			<TextBlock TextAlignment="Right" TextDecorations="Underline" Margin="0, 0, 0, 0">More</TextBlock>
-			<TextBlock TextAlignment="Right" Margin="0, 5, 0, 0" Text="{Binding PublishDate}"/>
-
-		</StackPanel>
 
 		<DockPanel Grid.Row="2"
 				   Grid.Column="0"
