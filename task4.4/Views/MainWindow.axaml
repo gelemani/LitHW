@@ -3,7 +3,7 @@
         xmlns:vm="using:task4._4.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:infrastructure="clr-namespace:task4._4.Infrastructure;assembly=task4._4"
+		xmlns:infrastructure="clr-namespace:task44.Infrastructure;assembly=task44"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="task4._4.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -69,7 +69,7 @@
 				<StackPanel Orientation="Vertical">
 					<TextBlock TextAlignment="Left" Margin="0, 0, 0, 15" Text="{Binding Article}"/>
 					<TextBlock TextWrapping="Wrap" Text="{Binding Text}"/>
-					<Image Source="{Binding ImagePath, Converter={x:Static infrastructure:BitmapValueConverter.Instance}}" Height="320" Width="280" HorizontalAlignment="Center" />
+					                                   
 				</StackPanel>
 			</DataTemplate>
 		</ListBox.ItemTemplate>
@@ -104,9 +104,11 @@
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<ItemsControl ItemsSource="{Binding Tags}">
-							<ItemsPanelTemplate>
-								<StackPanel Orientation="Horizontal" />
-							</ItemsPanelTemplate>
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Horizontal" />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
 						</ItemsControl>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
