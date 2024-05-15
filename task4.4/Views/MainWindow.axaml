@@ -69,7 +69,7 @@
 				<StackPanel Orientation="Vertical">
 					<TextBlock TextAlignment="Left" Margin="0, 0, 0, 15" Text="{Binding Article}"/>
 					<TextBlock TextWrapping="Wrap" Text="{Binding Text}"/>
-					                                   
+					<Image Source="{Binding ImagePath, Converter={x:Static infrastructure:BitmapValueConverter.Instance}}" />                          
 				</StackPanel>
 			</DataTemplate>
 		</ListBox.ItemTemplate>
