@@ -1,10 +1,9 @@
 namespace task4._4.Models;
-using Avalonia.Media;
-using Avalonia.Media.Imaging;
+using System.Collections.Generic;
 
 public class BlogEntity {
     public string Article { get; set; }
     public string Text { get; set; }
-    public string[] TagsList { get; set; }
+    public List<string> Tags { get; set; }
     public string ImagePath { get; set; }
-}
+}   
