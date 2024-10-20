@@ -1,65 +1,65 @@
 ﻿using Npgsql;
-using Dapper;
-using System;
-using System.Collections.Generic;
-using Npgsql.Replication.PgOutput.Messages;
+
+namespace UniversityDimDimich2.UniversityDimDimich2;
 
 class Program
 {
-    private static string _connectionString = "Host=localhost;Port=5432;Username=fedor;Password=1k2j3$h4g5f6b7n-bk2L;Database=university;";
+    private static readonly string ConnectionString = "Host=localhost;Port=5432;Username=fedor;Password=1k2j3$h4g5f6b7n-bk2L;Database=university;";
 
-    static void Main(string[] args)
+    static void Main()
     {
-        CreateTables();
-
         while (true)
         {
             Console.WriteLine("\nUniversity Database Management System");
-            Console.WriteLine("1. Add new record");
-            Console.WriteLine("2. Update record");
-            Console.WriteLine("3. Delete record");
-            Console.WriteLine("4. Get students by department");
-            Console.WriteLine("5. Get courses by teacher");
-            Console.WriteLine("6. Get students enrolled in a course");
-            Console.WriteLine("7. Get student grades for a course");
-            Console.WriteLine("8. Get student average grade for a course");
-            Console.WriteLine("9. Get student overall average grade");
-            Console.WriteLine("10. Get department average grade");
+            Console.WriteLine("1. Create new database");
+            Console.WriteLine("2. Add new record");
+            Console.WriteLine("3. Update record");
+            Console.WriteLine("4. Delete record");
+            Console.WriteLine("5. Get students by department");
+            Console.WriteLine("6. Get courses by teacher");
+            Console.WriteLine("7. Get students enrolled in a course");
+            Console.WriteLine("8. Get student grades for a course");
+            Console.WriteLine("9. Get student average grade for a course");
+            Console.WriteLine("10. Get student overall average grade");
+            Console.WriteLine("11. Get department average grade");
             Console.WriteLine("0. Exit");
 
             Console.Write("Enter your choice: ");
-            string choice = Console.ReadLine();
+            string choice = Console.ReadLine() ?? throw new InvalidOperationException();
 
             switch (choice)
             {
                 case "1":
-                    AddNewRecord();
+                    CreateNewDatabase();
                     break;
                 case "2":
-                    UpdateRecord();
+                    AddNewRecord();
                     break;
                 case "3":
-                    DeleteRecord();
+                    UpdateRecord();
                     break;
                 case "4":
-                    GetStudentsByDepartment();
+                    DeleteRecord();
                     break;
                 case "5":
-                    GetCoursesByTeacher();
+                    GetStudentsByDepartment();
                     break;
                 case "6":
-                    GetStudentsEnrolledInCourse();
+                    GetCoursesByTeacher();
                     break;
                 case "7":
-                    GetStudentGradesForCourse();
+                    GetStudentsEnrolledInCourse();
                     break;
                 case "8":
-                    GetStudentAverageGradeForCourse();
+                    GetStudentGradesForCourse();
                     break;
                 case "9":
-                    GetStudentOverallAverageGrade();
+                    GetStudentAverageGradeForCourse();
                     break;
                 case "10":
+                    GetStudentOverallAverageGrade();
+                    break;
+                case "11":
                     GetDepartmentAverageGrade();
                     break;
                 case "0":
@@ -70,15 +70,59 @@ class Program
             }
         }
     }
+    
+    static void CreateNewDatabase()
+    {
+        try
+        {
+            // Connect to the default postgres database
+            using (var conn = new NpgsqlConnection("Host=localhost;Port=5432;Username=fedor;Password=1k2j3$h4g5f6b7n-bk2L;Database=postgres;"))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
 
+                    // Terminate all connections to the template1 database
+                    cmd.CommandText = "SELECT pg_terminate_backend(pg_stat_activity.pid) " +
+                                      "FROM pg_stat_activity " +
+                                      "WHERE pg_stat_activity.datname = 'template1' " +
+                                      "AND pid <> pg_backend_pid();";
+                    cmd.ExecuteNonQuery();
+
+                    // Terminate all connections to the university database
+                    cmd.CommandText = "SELECT pg_terminate_backend(pg_stat_activity.pid) " +
+                                      "FROM pg_stat_activity " +
+                                      "WHERE pg_stat_activity.datname = 'university' " +
+                                      "AND pid <> pg_backend_pid();";
+                    cmd.ExecuteNonQuery();
+
+                    // Drop existing database if it exists
+                    cmd.CommandText = "DROP DATABASE IF EXISTS university;";
+                    cmd.ExecuteNonQuery();
+
+                    // Create a new database
+                    cmd.CommandText = "CREATE DATABASE university;";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            Console.WriteLine("Database deleted and new database created.");
+            CreateTables(); // Create tables in the new database
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error creating new database: " + ex.Message);
+        }
+    }
+    
     static void CreateTables()
     {
-        using (var connection = new NpgsqlConnection(_connectionString))
+        using (var conn = new NpgsqlConnection(ConnectionString))
         {
-            connection.Open();
+            conn.Open();
             using (var cmd = new NpgsqlCommand())
             {
-                cmd.Connection = connection;
+                cmd.Connection = conn;
                 cmd.CommandText = @"
                     CREATE TABLE IF NOT EXISTS Students (
                         ID SERIAL PRIMARY KEY,
@@ -119,7 +163,8 @@ class Program
             }
         }
     }
-
+    
+    
     static void AddNewRecord()
     {
         Console.WriteLine("What type of record do you want to add?");
@@ -129,7 +174,7 @@ class Program
         Console.WriteLine("4. Exam");
         Console.WriteLine("5. Grade");
 
-        string choice = Console.ReadLine();
+        string choice = Console.ReadLine() ?? throw new InvalidOperationException();
 
         switch (choice)
         {
@@ -156,130 +201,165 @@ class Program
 
     static void AddStudent()
     {
-        Console.Write("Enter student name: ");
-        string name = Console.ReadLine();
-        Console.Write("Enter student surname: ");
-        string surname = Console.ReadLine();
-        Console.Write("Enter student department: ");
-        string department = Console.ReadLine();
-        Console.Write("Enter student date of birth (yyyy-mm-dd): ");
-        DateTime dateOfBirth = DateTime.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter student name: ");
+            string name = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter student surname: ");
+            string surname = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter student department: ");
+            string department = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter student date of birth (yyyy-mm-dd): ");
+            DateTime dateOfBirth = DateTime.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO Students (Name, Surname, Department, DateOfBirth) VALUES (@name, @surname, @department, @dateOfBirth)";
- cmd.Parameters.AddWithValue("name", name);
-                cmd.Parameters.AddWithValue("surname", surname);
-                cmd.Parameters.AddWithValue("department", department);
-                cmd.Parameters.AddWithValue("dateOfBirth", dateOfBirth);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "INSERT INTO Students (Name, Surname, Department, DateOfBirth) VALUES (@name, @surname, @department, @dateOfBirth)";
+                    cmd.Parameters.AddWithValue("name", name ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("surname", surname ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("department", department ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("dateOfBirth", dateOfBirth);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Student added");
         }
-        Console.WriteLine("Student added");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error adding student: " + ex.Message);
+        }
     }
 
     static void AddTeacher()
     {
-        Console.Write("Enter teacher name: ");
-        string name = Console.ReadLine();
-        Console.Write("Enter teacher surname: ");
-        string surname = Console.ReadLine();
-        Console.Write("Enter teacher department: ");
-        string department = Console.ReadLine();
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter teacher name: ");
+            string name = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter teacher surname: ");
+            string surname = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter teacher department: ");
+            string department = Console.ReadLine() ?? throw new InvalidOperationException();
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO Teachers (Name, Surname, Department) VALUES (@name, @surname, @department)";
-                cmd.Parameters.AddWithValue("name", name);
-                cmd.Parameters.AddWithValue("surname", surname);
-                cmd.Parameters.AddWithValue("department", department);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "INSERT INTO Teachers (Name, Surname, Department) VALUES (@name, @surname, @department)";
+                    cmd.Parameters.AddWithValue("name", name ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("surname", surname ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("department", department ?? throw new InvalidOperationException());
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Teacher added");
         }
-        Console.WriteLine("Teacher added");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error adding teacher: " + ex.Message);
+        }
     }
 
     static void AddCourse()
     {
-        Console.Write("Enter course title: ");
-        string title = Console.ReadLine();
-        Console.Write("Enter course description: ");
-        string description = Console.ReadLine();
-        Console.Write("Enter teacher ID: ");
-        int teacherId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter course title: ");
+            string title = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter course description: ");
+            string description = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter teacher ID: ");
+            int teacherId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO Courses (Title, Description, TeacherID) VALUES (@title, @description, @teacherID)";
-                cmd.Parameters.AddWithValue("title", title);
-                cmd.Parameters.AddWithValue("description", description);
-                cmd.Parameters.AddWithValue("teacherID", teacherId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "INSERT INTO Courses (Title, Description, TeacherID) VALUES (@title, @description, @teacherID)";
+                    cmd.Parameters.AddWithValue("title", title ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("description", description ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("teacherID", teacherId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Course added");
         }
-        Console.WriteLine("Course added");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error adding course: " + ex.Message);
+        }
     }
 
     static void AddExam()
     {
-        Console.Write("Enter exam date (yyyy-mm-dd): ");
-        DateTime date = DateTime.Parse(Console.ReadLine());
-        Console.Write("Enter course ID: ");
-        int courseId = int.Parse(Console.ReadLine());
-        Console.Write("Enter max score: ");
-        int maxScore = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter exam date (yyyy-mm-dd): ");
+            DateTime date = DateTime.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter course ID: ");
+            int courseId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter max score: ");
+            int maxScore = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO Exams (Date, CourseID, MaxScore) VALUES (@date, @courseID, @maxScore)";
-                cmd.Parameters.AddWithValue("date", date);
-                cmd.Parameters.AddWithValue("courseID", courseId);
-                cmd.Parameters.AddWithValue("maxScore", maxScore);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "INSERT INTO Exams (Date, CourseID, MaxScore) VALUES (@date, @courseID, @maxScore)";
+                    cmd.Parameters.AddWithValue("date", date);
+                    cmd.Parameters.AddWithValue("courseID", courseId);
+                    cmd.Parameters.AddWithValue("maxScore", maxScore);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Exam added");
         }
-        Console.WriteLine("Exam added");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error adding exam: " + ex.Message);
+        }
     }
 
     static void AddGrade()
     {
-        Console.Write("Enter student ID: ");
-        int studentId = int.Parse(Console.ReadLine());
-        Console.Write("Enter exam ID: ");
-        int examId = int.Parse(Console.ReadLine());
-        Console.Write("Enter score: ");
-        int score = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter student ID: ");
+            int studentId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter exam ID: ");
+            int examId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter score: ");
+            int score = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO Grades (StudentID, ExamID, Score) VALUES (@studentID, @examID, @score)";
-                cmd.Parameters.AddWithValue("studentID", studentId);
-                cmd.Parameters.AddWithValue("examID", examId);
-                cmd.Parameters.AddWithValue("score", score);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "INSERT INTO Grades (StudentID, ExamID, Score) VALUES (@ studentID, @examID, @score)";
+                    cmd.Parameters.AddWithValue("studentID", studentId);
+                    cmd.Parameters.AddWithValue("examID", examId);
+                    cmd.Parameters.AddWithValue("score", score);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Grade added");
         }
-        Console.WriteLine("Grade added");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error adding grade: " + ex.Message);
+        }
     }
 
     static void UpdateRecord()
@@ -291,7 +371,7 @@ class Program
         Console.WriteLine("4. Exam");
         Console.WriteLine("5. Grade");
 
-        string choice = Console.ReadLine();
+        string choice = Console.ReadLine() ?? throw new InvalidOperationException();
 
         switch (choice)
         {
@@ -318,145 +398,180 @@ class Program
 
     static void UpdateStudent()
     {
-        Console.Write("Enter student ID: ");
-        int studentId = int.Parse(Console.ReadLine());
-        Console.Write("Enter new student name: ");
-        string name = Console.ReadLine();
-        Console.Write("Enter new student surname: ");
-        string surname = Console.ReadLine();
-        Console.Write("Enter new student department: ");
-        string department = Console.ReadLine();
-        Console.Write("Enter new student date of birth (yyyy-mm-dd): ");
-        DateTime dateOfBirth = DateTime.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter student ID: ");
+            int studentId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter new student name: ");
+            string name = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter new student surname: ");
+            string surname = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter new student department: ");
+            string department = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter new student date of birth (yyyy-mm-dd): ");
+            DateTime dateOfBirth = DateTime.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "UPDATE Students SET Name = @name, Surname = @surname, Department = @department, DateOfBirth = @dateOfBirth WHERE ID = @studentID";
-                cmd.Parameters.AddWithValue("name", name);
-                cmd.Parameters.AddWithValue("surname", surname);
-                cmd.Parameters.AddWithValue("department", department);
-                cmd.Parameters.AddWithValue("dateOfBirth", dateOfBirth);
-                cmd.Parameters.AddWithValue("studentID", studentId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE Students SET Name = @name, Surname = @surname, Department = @department, DateOfBirth = @dateOfBirth WHERE ID = @studentID";
+                    cmd.Parameters.AddWithValue("name", name);
+                    cmd.Parameters.AddWithValue("surname", surname);
+                    cmd.Parameters.AddWithValue("department", department);
+                    cmd.Parameters.AddWithValue("dateOfBirth", dateOfBirth);
+                    cmd.Parameters.AddWithValue("studentID", studentId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Student updated");
         }
-        Console.WriteLine("Student updated");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error updating student: " + ex.Message);
+        }
     }
 
     static void UpdateTeacher()
     {
-        Console.Write("Enter teacher ID: ");
-        int teacherId = int.Parse(Console.ReadLine());
-        Console.Write("Enter new teacher name: ");
-        string name = Console.ReadLine();
-        Console.Write("Enter new teacher surname: ");
-        string surname = Console.ReadLine();
-        Console.Write("Enter new teacher department: ");
-        string department = Console.ReadLine();
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter teacher ID: ");
+            int teacherId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter new teacher name: ");
+            string name = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter new teacher surname: ");
+            string surname = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter new teacher department: ");
+            string department = Console.ReadLine() ?? throw new InvalidOperationException();
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "UPDATE Teachers SET Name = @name, Surname = @surname, Department = @department WHERE ID = @teacherID";
-                cmd.Parameters.AddWithValue("name", name);
-                cmd.Parameters.AddWithValue("surname", surname);
-                cmd.Parameters.AddWithValue("department", department);
-                cmd.Parameters.AddWithValue("teacherID", teacherId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE Teachers SET Name = @name, Surname = @surname, Department = @department WHERE ID = @teacherID";
+                    cmd.Parameters.AddWithValue("name", name ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("surname", surname ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("department", department ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("teacherID", teacherId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Teacher updated");
         }
-        Console.WriteLine("Teacher updated");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error updating teacher: " + ex.Message);
+        }
     }
 
     static void UpdateCourse()
     {
-        Console.Write("Enter course ID: ");
-        int courseId = int.Parse(Console.ReadLine());
-        Console.Write("Enter new course title: ");
-        string title = Console.ReadLine();
-        Console.Write("Enter new course description: ");
-        string description = Console.ReadLine();
-        Console.Write("Enter new teacher ID: ");
-        int teacherId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter course ID: ");
+            int courseId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter new course title: ");
+            string title = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter new course description: ");
+            string description = Console.ReadLine() ?? throw new InvalidOperationException();
+            Console.Write("Enter new teacher ID: ");
+            int teacherId = int.Parse(s: Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "UPDATE Courses SET Title = @title, Description = @description, TeacherID = @teacherID WHERE ID = @courseID";
-                cmd.Parameters.AddWithValue("title", title);
-                cmd.Parameters.AddWithValue("description", description);
-                cmd.Parameters.AddWithValue("teacherID", teacherId);
-                cmd.Parameters.AddWithValue("courseID", courseId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE Courses SET Title = @title, Description = @description, TeacherID = @teacherID WHERE ID = @courseID";
+                    cmd.Parameters.AddWithValue("title", title ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("description", description ?? throw new InvalidOperationException());
+                    cmd.Parameters.AddWithValue("teacherID", teacherId);
+                    cmd.Parameters.AddWithValue("courseID", courseId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Course updated");
         }
-        Console.WriteLine("Course updated");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error updating course: " + ex.Message);
+        }
     }
 
     static void UpdateExam()
     {
-        Console.Write("Enter exam ID: ");
-        int examId = int.Parse(Console.ReadLine());
-        Console.Write("Enter new exam date (yyyy-mm-dd): ");
-        DateTime date = DateTime.Parse(Console.ReadLine());
-        Console.Write("Enter new course ID: ");
-        int courseId = int.Parse(Console.ReadLine());
-        Console.Write("Enter new max score: ");
-        int maxScore = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter exam ID: ");
+            int examId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter new exam date (yyyy-mm-dd): ");
+            DateTime date = DateTime.Parse(Console.ReadLine () ?? throw new InvalidOperationException());
+            Console.Write("Enter new course ID: ");
+            int courseId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter new max score: ");
+            int maxScore = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "UPDATE Exams SET Date = @date, CourseID = @courseID, MaxScore = @maxScore WHERE ID = @examID";
-                cmd.Parameters.AddWithValue("date", date);
-                cmd.Parameters.AddWithValue("courseID", courseId);
-                cmd.Parameters.AddWithValue("maxScore", maxScore);
-                cmd.Parameters.AddWithValue("examID", examId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE Exams SET Date = @date, CourseID = @courseID, MaxScore = @maxScore WHERE ID = @examID";
+                    cmd.Parameters.AddWithValue("date", date);
+                    cmd.Parameters.AddWithValue("courseID", courseId);
+                    cmd.Parameters.AddWithValue("maxScore", maxScore);
+                    cmd.Parameters.AddWithValue("examID", examId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Exam updated");
         }
-        Console.WriteLine("Exam updated");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error updating exam: " + ex.Message);
+        }
     }
 
     static void UpdateGrade()
     {
-        Console.Write("Enter grade ID: ");
-        int gradeId = int.Parse(Console.ReadLine());
-        Console.Write("Enter new student ID: ");
-        int studentId = int.Parse(Console.ReadLine());
-        Console.Write("Enter new exam ID: ");
-        int examId = int.Parse(Console.ReadLine());
-        Console.Write("Enter new score: ");
-        int score = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter grade ID: ");
+            int gradeId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter new student ID: ");
+            int studentId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter new exam ID: ");
+            int examId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter new score: ");
+            int score = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "UPDATE Grades SET StudentID = @studentID, ExamID = @examID, Score = @score WHERE ID = @gradeID";
-                cmd.Parameters.AddWithValue("studentID", studentId);
-                cmd.Parameters.AddWithValue("examID", examId);
-                cmd.Parameters.AddWithValue("score", score);
-                cmd.Parameters.AddWithValue("gradeID", gradeId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE Grades SET StudentID = @studentID, ExamID = @examID, Score = @score WHERE ID = @gradeID";
+                    cmd.Parameters.AddWithValue("studentID", studentId);
+                    cmd.Parameters.AddWithValue("examID", examId);
+                    cmd.Parameters.AddWithValue("score", score);
+                    cmd.Parameters.AddWithValue("gradeID", gradeId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Grade updated");
         }
-        Console.WriteLine("Grade updated");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error updating grade: " + ex.Message);
+        }
     }
 
     static void DeleteRecord()
@@ -468,7 +583,7 @@ class Program
         Console.WriteLine("4. Exam");
         Console.WriteLine("5. Grade");
 
-        string choice = Console.ReadLine();
+        string choice = Console.ReadLine() ?? throw new InvalidOperationException();
 
         switch (choice)
         {
@@ -495,300 +610,412 @@ class Program
 
     static void DeleteStudent()
     {
-        Console.Write("Enter student ID: ");
-        int studentId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter student ID: ");
+            int studentId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "DELETE FROM Students WHERE ID = @studentID";
-                cmd.Parameters.AddWithValue("studentID", studentId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "DELETE FROM Students WHERE ID = @studentID";
+                    cmd.Parameters.AddWithValue("studentID", studentId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Student deleted");
         }
-        Console.WriteLine("Student deleted");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error deleting student: " + ex.Message);
+        }
     }
 
-    static void DeleteTeacher()
+    private static void DeleteTeacher()
     {
-        Console.Write("Enter teacher ID: ");
-        int teacherId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter teacher ID: ");
+            int teacherId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "DELETE FROM Teachers WHERE ID = @teacherID";
-                cmd.Parameters.AddWithValue("teacherID", teacherId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "DELETE FROM Teachers WHERE ID = @teacherID";
+                    cmd.Parameters.AddWithValue("teacherID", teacherId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Teacher deleted");
         }
-        Console.WriteLine("Teacher deleted");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error deleting teacher: " + ex.Message);
+        }
     }
 
     static void DeleteCourse()
     {
-        Console.Write("Enter course ID: ");
-        int courseId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter course ID: ");
+            int courseId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "DELETE FROM Courses WHERE ID = @courseID";
-                cmd.Parameters.AddWithValue("courseID", courseId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "DELETE FROM Courses WHERE ID = @courseID";
+                    cmd.Parameters.AddWithValue("courseID", courseId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Course deleted");
         }
-        Console.WriteLine("Course deleted");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error deleting course: " + ex.Message);
+        }
     }
 
     static void DeleteExam()
     {
-        Console.Write("Enter exam ID: ");
-        int examId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter exam ID: ");
+            int examId = int.Parse(Console .ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "DELETE FROM Exams WHERE ID = @examID";
-                cmd.Parameters.AddWithValue("examID", examId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "DELETE FROM Exams WHERE ID = @examID";
+                    cmd.Parameters.AddWithValue("examID", examId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Exam deleted");
         }
-        Console.WriteLine("Exam deleted");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error deleting exam: " + ex.Message);
+        }
     }
 
     static void DeleteGrade()
     {
-        Console.Write("Enter grade ID: ");
-        int gradeId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
+            Console.Write("Enter grade ID: ");
+            int gradeId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+
+            using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                cmd.Connection = conn;
-                cmd.CommandText = "DELETE FROM Grades WHERE ID = @gradeID";
-                cmd.Parameters.AddWithValue("gradeID", gradeId);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "DELETE FROM Grades WHERE ID = @gradeID";
+                    cmd.Parameters.AddWithValue("gradeID", gradeId);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            Console.WriteLine("Grade deleted");
         }
-        Console.WriteLine("Grade deleted");
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error deleting grade: " + ex.Message);
+        }
     }
 
     static void GetStudentsByDepartment()
     {
-        Console.Write("Enter department: ");
-        string department = Console.ReadLine();
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
-            {
-                cmd.Connection = conn;
-                cmd.CommandText = "SELECT * FROM Students WHERE Department = @department";
-                cmd.Parameters.AddWithValue("department", department);
+            Console.Write("Enter department: ");
+            string department = Console.ReadLine() ?? throw new InvalidOperationException();
 
-                using (var reader = cmd.ExecuteReader())
+            using (var conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
                 {
-                    while (reader.Read())
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT * FROM Students WHERE Department = @department";
+                    cmd.Parameters.AddWithValue("department", department ?? throw new InvalidOperationException());
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        Console.WriteLine($"ID: {reader["ID"]}, Name: {reader["Name"]}, Surname: {reader["Surname"]}, Department: {reader["Department"]}, DateOfBirth: {reader["DateOfBirth"]}");
+                        if (!reader.HasRows)
+                        {
+                            Console.WriteLine("No students found in the specified department.");
+                        }
+                        else
+                        {
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"ID: {reader["ID"]}, Name: {reader["Name"]}, Surname: {reader["Surname"]}, Department: {reader["Department"]}, DateOfBirth: {reader["DateOfBirth"]}");
+                            }
+                        }
                     }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error retrieving students by department: " + ex.Message);
         }
     }
 
     static void GetCoursesByTeacher()
     {
-        Console.Write("Enter teacher ID: ");
-        int teacherId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
-            {
-                cmd.Connection = conn;
-                cmd.CommandText = "SELECT * FROM Courses WHERE TeacherID = @teacherID";
-                cmd.Parameters.AddWithValue("teacherID", teacherId);
+            Console.Write("Enter teacher ID: ");
+            int teacherId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
 
-                using (var reader = cmd.ExecuteReader())
+            using (var conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
                 {
-                    while (reader.Read())
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT * FROM Courses WHERE TeacherID = @teacherID";
+                    cmd.Parameters.AddWithValue("teacherID", teacherId);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        Console.WriteLine($"ID: {reader["ID"]}, Title: {reader["Title"]}, Description: {reader["Description"]}, TeacherID: {reader["TeacherID"]}");
+                        if (!reader.HasRows)
+                        {
+                            Console.WriteLine("No courses found for the specified teacher.");
+                        }
+                        else
+                        {
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"ID: {reader["ID"]}, Title: {reader["Title"]}, Description: {reader["Description"]}, TeacherID: {reader["TeacherID"]}");
+                            }
+                        }
                     }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error retrieving courses by teacher: " + ex.Message);
         }
     }
 
     static void GetStudentsEnrolledInCourse()
     {
-        Console.Write("Enter course ID: ");
-        int courseId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
-            {
-                cmd.Connection = conn;
-                cmd.CommandText = @"
-                    SELECT s.* 
-                    FROM Students s 
-                    JOIN Grades g ON s.ID = g.StudentID 
-                    JOIN Exams e ON g.ExamID = e.ID 
-                    WHERE e.CourseID = @courseID";
-                cmd.Parameters.AddWithValue("courseID", courseId);
+            Console.Write("Enter course ID: ");
+            int courseId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
 
-                using (var reader = cmd.ExecuteReader())
+            using (var conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
                 {
-                    while (reader.Read())
+                    cmd.Connection = conn;
+                    cmd.CommandText = @"
+                        SELECT s.* 
+                        FROM Students s 
+                        JOIN Grades g ON s.ID = g.StudentID 
+                        JOIN Exams e ON g.ExamID = e.ID 
+                        WHERE e.CourseID = @courseID";
+                    cmd.Parameters.AddWithValue("courseID", courseId);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        Console.WriteLine($"ID: {reader["ID"]}, Name: {reader["Name"]}, Surname: {reader["Surname"]}, Department: {reader["Department"]}, DateOfBirth: {reader["DateOfBirth"]}");
+                        if (!reader.HasRows)
+                        {
+                            Console.WriteLine("No students enrolled in the specified course.");
+                        }
+                        else
+                        {
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"ID: {reader["ID"]}, Name: {reader["Name"]}, Surname: {reader["Surname"]}, Department: {reader["Department"]}, DateOfBirth: {reader["DateOfBirth"]}");
+                            }
+                        }
                     }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error retrieving students enrolled in course: " + ex.Message);
         }
     }
 
     static void GetStudentGradesForCourse()
     {
-        Console.Write("Enter student ID: ");
-        int studentId = int.Parse(Console.ReadLine());
-        Console.Write("Enter course ID: ");
-        int courseId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
-            {
-                cmd.Connection = conn;
-                cmd.CommandText = @"
-                    SELECT g.Score, e.Date 
-                    FROM Grades g 
-                    JOIN Exams e ON g.ExamID = e.ID 
-                    WHERE g.StudentID = @studentID AND e.CourseID = @courseID";
-                cmd.Parameters.AddWithValue("studentID", studentId);
-                cmd.Parameters.AddWithValue("courseID", courseId);
+            Console.Write("Enter student ID: ");
+            int studentId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter course ID: ");
+            int courseId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
 
-                using (var reader = cmd.ExecuteReader())
+            using (var conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
                 {
-                    while (reader.Read())
+                    cmd.Connection = conn;
+                    cmd.CommandText = @"
+                        SELECT g.Score, e.Date 
+                        FROM Grades g 
+                        JOIN Exams e ON g.ExamID = e.ID 
+                        WHERE g.StudentID = @studentID AND e.CourseID = @courseID";
+                    cmd.Parameters.AddWithValue("studentID", studentId);
+                    cmd.Parameters.AddWithValue("courseID", courseId);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        Console.WriteLine($"Score: {reader["Score"]}, Exam Date: {reader["Date"]}");
+                        if (!reader.HasRows)
+                        {
+                            Console.WriteLine("No grades found for the specified student and course.");
+                        }
+                        else
+                        {
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"Score: {reader["Score"]}, Exam Date: {reader["Date"]}");
+                            }
+                        }
                     }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error retrieving student grades for course: " + ex.Message);
         }
     }
 
     static void GetStudentAverageGradeForCourse()
     {
-        Console.Write("Enter student ID: ");
-        int studentId = int.Parse(Console.ReadLine());
-        Console.Write("Enter course ID: ");
-        int courseId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
-            {
-                cmd.Connection = conn;
-                cmd.CommandText = @"
-                    SELECT AVG(g.Score) 
-                    FROM Grades g 
-                    JOIN Exams e ON g.ExamID = e.ID 
-                    WHERE g.StudentID = @studentID AND e.CourseID = @courseID";
-                cmd.Parameters.AddWithValue("studentID", studentId);
-                cmd.Parameters.AddWithValue("courseID", courseId);
+            Console.Write("Enter student ID: ");
+            int studentId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
+            Console.Write("Enter course ID: ");
+            int courseId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
 
-                object result = cmd.ExecuteScalar();
-                if (result != null)
+            using (var conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
                 {
-                    Console.WriteLine($"Average grade: {result}");
-                }
-                else
-                {
-                    Console.WriteLine("No grades found.");
+                    cmd.Connection = conn;
+                    cmd.CommandText = @"
+                        SELECT AVG(g.Score) 
+                        FROM Grades g 
+                        JOIN Exams e ON g.ExamID = e.ID 
+                        WHERE g.StudentID = @studentID AND e.CourseID = @courseID";
+                    cmd.Parameters.AddWithValue("studentID", studentId);
+                    cmd.Parameters.AddWithValue("courseID", courseId);
+
+                    object? result = cmd.ExecuteScalar();
+                    if (result == null)
+                    {
+                        Console.WriteLine("No grades found for the specified student and course.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Average grade: {result}");
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error retrieving student average grade for course: " + ex.Message);
         }
     }
 
     static void GetStudentOverallAverageGrade()
     {
-        Console.Write("Enter student ID: ");
-        int studentId = int.Parse(Console.ReadLine());
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
-            {
-                cmd.Connection = conn;
-                cmd.CommandText = "SELECT AVG(g.Score) FROM Grades g WHERE g.StudentID = @studentID";
-                cmd.Parameters.AddWithValue("studentID", studentId);
+            Console.Write("Enter student ID: ");
+            int studentId = int.Parse(Console.ReadLine() ?? throw new InvalidOperationException());
 
-                object result = cmd.ExecuteScalar();
-                if (result != null)
+            using (var conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
                 {
-                    Console.WriteLine($"Overall average grade: {result}");
-                }
-                else
-                {
-                    Console.WriteLine("No grades found.");
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT AVG(g.Score) FROM Grades g WHERE g.StudentID = @studentID";
+                    cmd.Parameters.AddWithValue("studentID", studentId);
+
+                    object? result = cmd.ExecuteScalar();
+                    if (result == null)
+                    {
+                        Console.WriteLine("No grades found for the specified student.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Overall average grade: {result}");
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error retrieving student overall average grade: " + ex.Message);
         }
     }
 
     static void GetDepartmentAverageGrade()
     {
-        Console.Write("Enter department: ");
-        string department = Console.ReadLine();
-
-        using (var conn = new NpgsqlConnection(_connectionString))
+        try
         {
-            conn.Open();
-            using (var cmd = new NpgsqlCommand())
-            {
-                cmd.Connection = conn;
-                cmd.CommandText = @"
-                    SELECT AVG(g.Score) 
-                    FROM Grades g 
-                    JOIN Students s ON g.StudentID = s.ID 
-                    WHERE s.Department = @department";
-                cmd.Parameters.AddWithValue("department", department);
+            Console.Write("Enter department: ");
+            string department = Console.ReadLine() ?? throw new InvalidOperationException();
 
-                object result = cmd.ExecuteScalar();
-                if (result != null)
+            using (var conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
                 {
-                    Console.WriteLine($"Department average grade: {result}");
-                }
-                else
-                {
-                    Console.WriteLine("No grades found.");
+                    cmd.Connection = conn;
+                    cmd.CommandText = @"
+                        SELECT AVG(g.Score) 
+                        FROM Grades g 
+                        JOIN Students s ON g.StudentID = s.ID 
+                        WHERE s.Department = @department";
+                    cmd.Parameters.AddWithValue("department", department ?? throw new InvalidOperationException());
+
+                    object? result = cmd.ExecuteScalar();
+                    if (result == null)
+                    {
+                        Console.WriteLine("No grades found for the specified department.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Department average grade: {result}");
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error retrieving department average grade: " + ex.Message);
         }
     }
 }
