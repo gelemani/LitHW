@@ -71,6 +71,61 @@ class Program
         }
     }
     
+    // static void CreateNewDatabase()
+    // {
+    //     try
+    //     {
+    //         // Connect to the default postgres database
+    //         using (var conn = new NpgsqlConnection("Host=localhost;Port=5432;Username=fedor;Password=1k2j3$h4g5f6b7n-bk2L;Database=university;"))
+    //         {
+    //             conn.Open();
+    //
+    //             // Create a separate connection for termination
+    //             using (var terminateConn = new NpgsqlConnection("Host=localhost;Port=5432;Username=fedor;Password=1k2j3$h4g5f6b7n-bk2L;Database=postgres;"))
+    //             {
+    //                 terminateConn.Open();
+    //                 using (var terminateCmd = new NpgsqlCommand())
+    //                 {
+    //                     terminateCmd.Connection = terminateConn;
+    //
+    //                     // Terminate all connections to the template1 database
+    //                     terminateCmd.CommandText = "SELECT pg_terminate_backend(pg_stat_activity.pid) " +
+    //                                               "FROM pg_stat_activity " +
+    //                                               "WHERE pg_stat_activity.datname = 'template1' " +
+    //                                               "AND pid <> pg_backend_pid();";
+    //                     terminateCmd.ExecuteNonQuery();
+    //
+    //                     // Terminate all connections to the university database
+    //                     terminateCmd.CommandText = "SELECT pg_terminate_backend(pg_stat_activity.pid) " +
+    //                                               "FROM pg_stat_activity " +
+    //                                               "WHERE pg_stat_activity.datname = 'university' " +
+    //                                               "AND pid <> pg_backend_pid();";
+    //                     terminateCmd.ExecuteNonQuery();
+    //                 }
+    //             }
+    //
+    //             using (var cmd = new NpgsqlCommand())
+    //             {
+    //                 cmd.Connection = conn;
+    //
+    //                 // Drop existing database if it exists
+    //                 cmd.CommandText = "DROP DATABASE IF EXISTS university;";
+    //                 cmd.ExecuteNonQuery();
+    //
+    //                 // Create a new database
+    //                 cmd.CommandText = "CREATE DATABASE university;";
+    //                 cmd.ExecuteNonQuery();
+    //             }
+    //         }
+    //         Console.WriteLine("Database deleted and new database created.");
+    //         CreateTables(); // Create tables in the new database
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Console.WriteLine("Error creating new database: " + ex.Message);
+    //     }
+    // }
+        
     static void CreateNewDatabase()
     {
         try
@@ -82,25 +137,25 @@ class Program
                 using (var cmd = new NpgsqlCommand())
                 {
                     cmd.Connection = conn;
-
+    
                     // Terminate all connections to the template1 database
                     cmd.CommandText = "SELECT pg_terminate_backend(pg_stat_activity.pid) " +
                                       "FROM pg_stat_activity " +
                                       "WHERE pg_stat_activity.datname = 'template1' " +
                                       "AND pid <> pg_backend_pid();";
                     cmd.ExecuteNonQuery();
-
+    
                     // Terminate all connections to the university database
                     cmd.CommandText = "SELECT pg_terminate_backend(pg_stat_activity.pid) " +
                                       "FROM pg_stat_activity " +
                                       "WHERE pg_stat_activity.datname = 'university' " +
                                       "AND pid <> pg_backend_pid();";
                     cmd.ExecuteNonQuery();
-
+    
                     // Drop existing database if it exists
                     cmd.CommandText = "DROP DATABASE IF EXISTS university;";
                     cmd.ExecuteNonQuery();
-
+    
                     // Create a new database
                     cmd.CommandText = "CREATE DATABASE university;";
                     cmd.ExecuteNonQuery();
@@ -119,7 +174,7 @@ class Program
     {
         using (var conn = new NpgsqlConnection(ConnectionString))
         {
-            conn.Open();
+            conn.Open();    
             using (var cmd = new NpgsqlCommand())
             {
                 cmd.Connection = conn;
@@ -221,7 +276,7 @@ class Program
                 using (var cmd = new NpgsqlCommand())
                 {
                     cmd.Connection = conn;
-                    cmd.CommandText = "INSERT INTO Students (Name, Surname, Department, DateOfBirth) VALUES (@name, @surname, @department, @dateOfBirth)";
+                    cmd.CommandText = "INSERT INTO Students (Name, Surname, Department, DateOfBirth) VALUES (@Name, @Surname, @Department, @DateOfBirth)";
                     cmd.Parameters.AddWithValue("name", name ?? throw new InvalidOperationException());
                     cmd.Parameters.AddWithValue("surname", surname ?? throw new InvalidOperationException());
                     cmd.Parameters.AddWithValue("department", department ?? throw new InvalidOperationException());
@@ -350,7 +405,7 @@ class Program
                 using (var cmd = new NpgsqlCommand())
                 {
                     cmd.Connection = conn;
-                    cmd.CommandText = "INSERT INTO Grades (StudentID, ExamID, Score) VALUES (@ studentID, @examID, @score)";
+                    cmd.CommandText = "INSERT INTO Grades (StudentID, ExamID, Score) VALUES (@StudentID, @examID, @score)";
                     cmd.Parameters.AddWithValue("studentID", studentId);
                     cmd.Parameters.AddWithValue("examID", examId);
                     cmd.Parameters.AddWithValue("score", score);
