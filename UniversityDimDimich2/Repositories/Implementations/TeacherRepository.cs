@@ -15,7 +15,12 @@ public class TeacherRepository : ITeacherRepository
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
             var sqlQuery = "INSERT INTO Teachers (Name, Surname, Department) VALUES (@name, @surname, @department)";
-            db.Execute(sqlQuery, teacher);
+            db.Execute(sqlQuery, new
+            {
+                name = teacher.Name,
+                surname = teacher.Surname,
+                department = teacher.Department
+            });
         }
     }
 
@@ -24,7 +29,12 @@ public class TeacherRepository : ITeacherRepository
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
             var sqlQuery = "UPDATE Teachers SET Name = @name, Surname = @surname, Department = @department WHERE ID = @teacherID";
-            db.Execute(sqlQuery, teacher);
+            db.Execute(sqlQuery, new
+            {
+                name = teacher.Name,
+                surname = teacher.Surname,
+                department = teacher.Department
+            });
         }
     }
 
@@ -33,7 +43,12 @@ public class TeacherRepository : ITeacherRepository
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
             var sqlQuery = "DELETE FROM Courses WHERE ID = @courseID";
-            db.Execute(sqlQuery, teacher);
+            db.Execute(sqlQuery, new
+            {
+                name = teacher.Name,
+                surname = teacher.Surname,
+                department = teacher.Department
+            });
         }
     }
 }

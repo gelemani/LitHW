@@ -5,8 +5,10 @@ namespace UniversityDimDimich2.Repositories.Implementations;
 
 public class GeneralDbRepository : IGeneralDbRepository
 {
-    private static readonly string ConnectionStringPostgres = "Host=localhost;Port=5432;Username=fedor;Password=1k2j3$h4g5f6b7n-bk2L;Database=postgres;";
-    private static readonly string ConnectionStringUniversity = "Host=localhost;Port=5432;Username=fedor;Password=1k2j3$h4g5f6b7n-bk2L;Database=university;";
+    private static readonly string ConnectionStringPostgres = "Host=localhost;Port=5432;Username=fedor;" +
+                                                              "Password=1k2j3$h4g5f6b7n-bk2L;Database=postgres;";
+    private static readonly string ConnectionStringUniversity = "Host=localhost;Port=5432;Username=fedor;" +
+                                                                "Password=1k2j3$h4g5f6b7n-bk2L;Database=university;";
 
     public void CreateDatabase()
     {

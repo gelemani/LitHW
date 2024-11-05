@@ -8,14 +8,24 @@ namespace UniversityDimDimich2.Repositories.Implementations;
 
 public class StudentRepository : IStudentRepository
 {
-    private static readonly string ConnectionString = "Host=localhost;Port=5432;Username=fedor;Password=1k2j3$h4g5f6b7n-bk2L;Database=university;";
+    private static readonly string ConnectionString = "Host=localhost;Port=5432;Username=fedor;" +
+                                                      "Password=1k2j3$h4g5f6b7n-bk2L;Database=university;";
 
     public void Add(Student student)
     {
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
-            var sqlQuery = "INSERT INTO Students (Name, Surname, Department, DateOfBirth) VALUES (@Name, @Surname, @Department, @DateOfBirth)";
-            db.Execute(sqlQuery, student);
+            var sqlQuery = @"INSERT INTO Students (Name, Surname, Department, DateOfBirth) 
+                VALUES (@Name, @Surname, @Department, @DateOfBirth)";
+            var insertedId = db.QuerySingle<int>(sqlQuery, new
+            {
+                studentID = student.Id,
+                name = student.Name, 
+                surname = student.Surname,
+                department = student.Department, 
+                dateOfBirth = student.DateOfBirth
+            });
+            student.Id = insertedId;
         }
     }
 
@@ -23,8 +33,19 @@ public class StudentRepository : IStudentRepository
     {
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
-            var sqlQuery = "UPDATE Students SET Name = @name, Surname = @surname, Department = @department, DateOfBirth = @dateOfBirth WHERE ID = @studentID";
-            db.Execute(sqlQuery, student);
+            var sqlQuery = @"
+                UPDATE Students 
+                SET Name = @name, Surname = @surname, 
+                Department = @department, DateOfBirth = @dateOfBirth 
+                WHERE ID = @studentID";
+            db.Execute(sqlQuery, new
+            {
+                studentID = student.Id,
+                name = student.Name, 
+                surname = student.Surname,
+                department = student.Department, 
+                dateOfBirth = student.DateOfBirth
+            });
         }
     }
 
@@ -33,7 +54,14 @@ public class StudentRepository : IStudentRepository
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
             var sqlQuery = "DELETE FROM Students WHERE ID = @studentID";
-            db.Execute(sqlQuery, student);
+            db.Execute(sqlQuery, new
+            {
+                studentID = student.Id,
+                name = student.Name, 
+                surname = student.Surname,
+                department = student.Department, 
+                dateOfBirth = student.DateOfBirth
+            });
         }
     }
 
@@ -71,18 +99,12 @@ public class StudentRepository : IStudentRepository
         }
     }
 
-    public List<float> GetStudentGradesByCourseId(Student student, int courseId)
+    public Student GetById(int studentId)
     {
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
-            return db.Query<float>(
-                    "SELECT g.Grade " + 
-                    "FROM Students s " +
-                    "JOIN Grades g ON s.ID = g.StudentID " +
-                    "JOIN Exams e ON g.ExamID = e.ID " +
-                    "WHERE e.CourseID = @courseId AND s.ID = @studentId",
-                    new { courseId, studentId = student }) 
-                .ToList();
+            return db.Query<Student>(
+                "SELECT * FROM Students WHERE id = @studentId", new {studentId}).FirstOrDefault();
         }
     }
 }
