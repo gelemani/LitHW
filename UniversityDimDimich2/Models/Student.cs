@@ -2,7 +2,7 @@ namespace UniversityDimDimich2.Models;
 
 public class Student : EntityBase
 {
-    public string Name { get; init; }
+    public string Name { get; set; }
     public string Surname { get; init; }
     public string Department { get; init; }
     public DateTime DateOfBirth { get; init; }

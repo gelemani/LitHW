@@ -6,5 +6,4 @@ public interface IStudentRepository : IEntityRepositoryBase<Student>
 {
     List<Student> GetStudentsByDepartmentId(string departmentId);
     List<Student> GetStudentsByEnrolledInCourse(int courseId);
-    Student GetById(int studentId);
 }

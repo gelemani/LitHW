@@ -14,8 +14,9 @@ public class CourseRepository : ICourseRepository
     {
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
-            var sqlQuery = "INSERT INTO Courses (Title, Description, TeacherID) VALUES (@title, @description, @teacherID)";
-            db.Execute(sqlQuery, courses);
+            var sqlQuery = @"INSERT INTO Courses (Title, Description, TeacherID) 
+                            VALUES (@title, @description, @teacherID) returning id";
+            courses.Id = db.ExecuteScalar<int>(sqlQuery, new {courses.Title, courses.Description, courses.TeacherId});
         }
     }
 
@@ -23,7 +24,8 @@ public class CourseRepository : ICourseRepository
     {
         using (IDbConnection db = new NpgsqlConnection(ConnectionString))
         {
-            var sqlQuery = "UPDATE Courses SET Title = @title, Description = @description, TeacherID = @teacherID WHERE ID = @courseID";
+            var sqlQuery = @"UPDATE Courses SET Title = @title, Description = @description, TeacherID = @teacherID 
+                            WHERE ID = @courseID";
             db.Execute(sqlQuery, courses);
         }
     }

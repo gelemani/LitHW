@@ -2,7 +2,7 @@ namespace UniversityDimDimich2.Models;
 
 public class Courses
 {
-    public int Id { get; init; }
+    public int Id { get; set; }
     public string Title { get; init; }
     public string Description { get; init; }
     public int TeacherId { get; init; }
