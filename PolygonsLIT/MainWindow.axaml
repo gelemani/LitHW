@@ -3,8 +3,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:polygonsLit="clr-namespace:PolygonsLIT"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
         x:Class="PolygonsLIT.MainWindow"
+        PointerPressed="InputElement_OnPointerPressed"
+        PointerMoved="InputElement_OnPointerMoved"
+        PointerReleased="InputElement_OnPointerReleased"
         Title="PolygonsLIT">
+    <Grid>
         <polygonsLit:CustomControl Name="CustomControl"/>
-</Window>
+        <StackPanel Margin="20">
+            <ComboBox x:Name="ShapeComboBox" SelectedIndex="0" MaxDropDownHeight="100"
+                      SelectionChanged="ShapeComboBox_SelectionChanged">
+                <ComboBoxItem>Circle</ComboBoxItem>
+                <ComboBoxItem>Square</ComboBoxItem>
+                <ComboBoxItem>Triangle</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</Window>   
