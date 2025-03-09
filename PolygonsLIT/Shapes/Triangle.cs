@@ -30,7 +30,7 @@ public class Triangle : Shape
 
         PolylineGeometry geometry = new PolylineGeometry(points, true);
         drawingContext.DrawGeometry(brush, pen, geometry);
-        Console.WriteLine("Drawing a triangle!");
+        // Console.WriteLine("Drawing a triangle!");
     }
 
     public override bool IsInside(int dx, int dy)

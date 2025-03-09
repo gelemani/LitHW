@@ -17,7 +17,7 @@ public class Square : Shape
         
         double delta = Radius * Math.Sqrt(2) / 2;
         drawingContext.DrawRectangle(brush, pen, new Rect(new Point(X - delta, Y - delta), new Size(2*delta, 2*delta)));
-        Console.WriteLine("Drawing a square!");
+        // Console.WriteLine("Drawing a square!");
     }
 
     public override bool IsInside(int dx, int dy)

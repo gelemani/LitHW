@@ -16,7 +16,7 @@ namespace PolygonsLIT.Shapes
             Brush brush = new SolidColorBrush(Colors.White);
 
             drawingContext.DrawEllipse(brush, pen, new Point(X, Y), Radius, Radius);
-            Console.WriteLine("Drawing a circle!");
+            // Console.WriteLine("Drawing a circle!");
         }
 
         public override bool IsInside(int dx, int dy)
