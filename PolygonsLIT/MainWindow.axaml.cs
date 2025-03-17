@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 
 namespace PolygonsLIT;
@@ -11,19 +12,25 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
     
-    private void InputElement_OnPointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+    private void InputElement_OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         CustomControl customControl = this.Find<CustomControl>("CustomControl")!;
+
+        if (e.Pointer.Captured is TextBlock || e.Pointer.Captured is LightDismissOverlayLayer || e.Pointer.Captured is Border)
+
+            return; 
+
         if (e.GetCurrentPoint(customControl).Properties.IsRightButtonPressed)
         {
             customControl.LeftClick(Convert.ToInt32(e.GetPosition(customControl).X), Convert.ToInt32(e.GetPosition(customControl).Y));
-            
         }
         else
         {
             customControl.RightClick(Convert.ToInt32(e.GetPosition(customControl).X), Convert.ToInt32(e.GetPosition(customControl).Y));
         }
+        // Console.WriteLine($"Clicked on: {e.Source?.GetType().Name}");
     }
+
     
     private void InputElement_OnPointerMoved(object? sender, PointerEventArgs e)
     {
@@ -42,6 +49,14 @@ public partial class MainWindow : Window
         if (sender is ComboBox comboBox && CustomControl != null)
         {
             CustomControl.SelectedShapeIndex = comboBox.SelectedIndex;
+        }
+    }
+
+    private void AlgorithmComboBox_OnSelectionChangedComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox comboBox && CustomControl != null)
+        {
+            CustomControl.SelectedAlgorithmIndex = comboBox.SelectedIndex;
         }
     }
 }

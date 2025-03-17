@@ -16,23 +16,40 @@ namespace PolygonsLIT
         List<Avalonia.Point> _borders = new();
         private int _cx, _cy;
         public int SelectedShapeIndex { get; set; } = 0;
-
+        public int SelectedAlgorithmIndex { get; set; } = 0;
+        private AnalitycsWindow? _analitycsWindow;
+        
         public override void Render(DrawingContext drawingContext)
-        {
-             foreach (Shape shape in _shapes)
-             {
-                 shape.Draw(drawingContext);
-             }
-             if (_shapes.Count < 3)
-                 return;
+        { 
+            // SpeedTest(); 
+            foreach (Shape shape in _shapes)
+            { 
+                shape.Draw(drawingContext);
+            }
+            if (_shapes.Count < 3) 
+                return;
 
-            // ByDefinition(drawingContext);
-            Jarvice(drawingContext);
-
-            // SpeedTest();
+            switch (SelectedAlgorithmIndex)
+            {
+                case 0:
+                    ByDefinition(drawingContext);
+                    Console.WriteLine("Using By Definition");
+                    break;
+                case 1:
+                    Jarvice(drawingContext);
+                    Console.WriteLine("Using Jarvice");
+                    break;
+                case 2: 
+                    SpeedTest();
+                    SelectedAlgorithmIndex = 0;
+                    break;
+                default:
+                    ByDefinition(drawingContext);
+                    Console.WriteLine("Using By Definition (default)");
+                    break;
+            }
         }
-
-
+        
         protected void ByDefinition(DrawingContext drawingContext)
         {
             _borders.Clear();
@@ -306,23 +323,35 @@ namespace PolygonsLIT
 
         public void SpeedTest()
         {
-            _shapes = CreateRandomShapes(150);
+            _shapes = CreateRandomShapes(_shapes.Count);
 
             Stopwatch stopwatchDef = new Stopwatch();
             stopwatchDef.Start();
             var bordersDef = ByDefinition();
             stopwatchDef.Stop();
-            Console.WriteLine("ByDefinition execution time: " + stopwatchDef.Elapsed.TotalMilliseconds + " ms");
 
             Stopwatch stopwatchJar = new Stopwatch();
             stopwatchJar.Start();
             var bordersJar = Jarvice();
             stopwatchJar.Stop();
+
+            Console.WriteLine("ByDefinition execution time: " + stopwatchDef.Elapsed.TotalMilliseconds + " ms");
             Console.WriteLine("Jarvice execution time: " + stopwatchJar.Elapsed.TotalMilliseconds + " ms");
 
-            Console.WriteLine("ByDefinition border segments count: " + (bordersDef.Count / 2));
-            Console.WriteLine("Jarvice border segments count: " + (bordersJar.Count / 2));
+            if (_analitycsWindow == null || !_analitycsWindow.IsVisible)
+            {
+                _analitycsWindow = new AnalitycsWindow();
+                _analitycsWindow.Show();
+            }
+
+            _analitycsWindow.UpdateCharts(
+                stopwatchDef.Elapsed.TotalMilliseconds,
+                stopwatchJar.Elapsed.TotalMilliseconds,
+                bordersDef.Count / 2,
+                bordersJar.Count / 2
+            );
         }
+
 
         private List<Shape> CreateRandomShapes(int count)
         {

@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        xmlns:polygonsLit="clr-namespace:PolygonsLIT"
+        x:Class="PolygonsLIT.AnalitycsWindow"
+        Title="Analytics" Width="600" Height="400">
+    <StackPanel>
+        <!-- График -->
+        <oxy:PlotView Name="plotView" Height="300" Margin="10"/>
+        
+        <!-- TextBlocks и ProgressBars для других данных -->
+        <TextBlock Name="executionTimeTextBlock" Text="ByDefinition Execution Time: 0 ms" Margin="10"/>
+        <ProgressBar Name="executionTimeProgressBar" Maximum="1000" Height="20" Margin="10"/>
+
+        <TextBlock Name="jarviceTimeTextBlock" Text="Jarvice Execution Time: 0 ms" Margin="10"/>
+        <ProgressBar Name="jarviceTimeProgressBar" Maximum="1000" Height="20" Margin="10"/>
+
+        <TextBlock Name="borderCountTextBlock" Text="ByDefinition Border Count: 0" Margin="10"/>
+        <ProgressBar Name="bordersDefCountProgressBar" Maximum="100" Height="20" Margin="10"/>
+
+        <TextBlock Name="bordersJarCountTextBlock" Text="Jarvice Border Count: 0" Margin="10"/>
+        <ProgressBar Name="bordersJarCountProgressBar" Maximum="100" Height="20" Margin="10"/>
+    </StackPanel>
+</Window>

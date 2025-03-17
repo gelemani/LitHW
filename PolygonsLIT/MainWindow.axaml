@@ -13,12 +13,19 @@
         Title="PolygonsLIT">
     <Grid>
         <polygonsLit:CustomControl Name="CustomControl"/>
-        <StackPanel Margin="20">
+        <StackPanel Margin="20" Orientation="Horizontal">
             <ComboBox x:Name="ShapeComboBox" SelectedIndex="0" MaxDropDownHeight="100"
                       SelectionChanged="ShapeComboBox_SelectionChanged">
                 <ComboBoxItem>Circle</ComboBoxItem>
                 <ComboBoxItem>Square</ComboBoxItem>
                 <ComboBoxItem>Triangle</ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="AlgorithmComboBox" SelectedIndex="0" MaxDropDownHeight="100"
+                      Margin="20,0,0,0"
+                      SelectionChanged="AlgorithmComboBox_OnSelectionChangedComboBox_SelectionChanged">
+                <ComboBoxItem>ByDefenition</ComboBoxItem>
+                <ComboBoxItem>Jarvice</ComboBoxItem>
+                <ComboBoxItem>Analitycs</ComboBoxItem>
             </ComboBox>
         </StackPanel>
     </Grid>
