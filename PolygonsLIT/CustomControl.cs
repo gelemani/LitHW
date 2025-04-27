@@ -13,174 +13,45 @@ namespace PolygonsLIT
     {
         private static Random _random = new();
         private List<Shape> _shapes = new();
+        private List<Shape> _speedShapes = new();
         List<Avalonia.Point> _borders = new();
         private int _cx, _cy;
         public int SelectedShapeIndex { get; set; } = 0;
         public int SelectedAlgorithmIndex { get; set; } = 0;
         private AnalitycsWindow? _analitycsWindow;
-        
+
         public override void Render(DrawingContext drawingContext)
-        { 
-            // SpeedTest(); 
+        {
             foreach (Shape shape in _shapes)
-            { 
+            {
                 shape.Draw(drawingContext);
             }
-            if (_shapes.Count < 3) 
+            if (_shapes.Count < 3)
                 return;
 
             switch (SelectedAlgorithmIndex)
             {
                 case 0:
-                    ByDefinition(drawingContext);
-                    Console.WriteLine("Using By Definition");
+                    DrawConvexHull(drawingContext, CalculateByDefinition);
                     break;
                 case 1:
-                    Jarvice(drawingContext);
-                    Console.WriteLine("Using Jarvice");
+                    DrawConvexHull(drawingContext, CalculateJarvice);
                     break;
-                case 2: 
-                    SpeedTest();
+                case 3:
+                    OpenAnalitycsWindow();
                     SelectedAlgorithmIndex = 0;
                     break;
                 default:
-                    ByDefinition(drawingContext);
+                    DrawConvexHull(drawingContext, CalculateByDefinition);
                     Console.WriteLine("Using By Definition (default)");
                     break;
             }
         }
-        
-        protected void ByDefinition(DrawingContext drawingContext)
+
+        private void DrawConvexHull(DrawingContext drawingContext, Func<List<Avalonia.Point>> calculateHull)
         {
-            _borders.Clear();
+            _borders = calculateHull();
             var hullPen = new Pen(Brushes.Green, 2, lineCap: PenLineCap.Square);
-
-            for (int i = 0; i < _shapes.Count - 1; i++)
-            {
-                for (int j = i + 1; j < _shapes.Count; j++)
-                {
-                    Shape firstPoint = _shapes[i];
-                    Shape secondPoint = _shapes[j];
-                    bool allAbove = true;
-                    bool allBelow = true;
-
-                    if (firstPoint.X == secondPoint.X)
-                    {
-                        for (int a = 0; a < _shapes.Count; a++)
-                        {
-                            if (a == i || a == j)
-                                continue;
-                            Shape point = _shapes[a];
-                            if (firstPoint.X > point.X)
-                                allBelow = false;
-                            else if (firstPoint.X < point.X)
-                                allAbove = false;
-                            else
-                            {
-                                allAbove = false;
-                                allBelow = false;
-                            }
-                        }
-                    }
-
-                    if (firstPoint.Y == secondPoint.Y)
-                    {
-                        for (int a = 0; a < _shapes.Count; a++)
-                        {
-                            if (a == i || a == j)
-                                continue;
-                            Shape point = _shapes[a];
-                            if (firstPoint.Y > point.Y)
-                                allBelow = false;
-                            if (firstPoint.Y < point.Y)
-                                allAbove = false;
-                            else
-                            {
-                                allAbove = false;
-                                allBelow = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        double k = ((double)secondPoint.Y - firstPoint.Y) / ((double)secondPoint.X - firstPoint.X);
-                        double b = firstPoint.Y - k * firstPoint.X;
-                        for (int a = 0; a < _shapes.Count; a++)
-                        {
-                            if (a == i || a == j)
-                                continue;
-                            Shape point = _shapes[a];
-                            double yLine = k * point.X + b;
-                            if (yLine > point.Y)
-                                allBelow = false;
-                            else if (yLine < point.Y)
-                                allAbove = false;
-                            else
-                            {
-                                allAbove = false;
-                                allBelow = false;
-                            }
-                        }
-                    }
-
-                    if (allAbove || allBelow)
-                    {
-                        _borders.Add(new Avalonia.Point(firstPoint.X, firstPoint.Y));
-                        _borders.Add(new Avalonia.Point(secondPoint.X, secondPoint.Y));
-                    }
-                }
-            }
-
-            for (int i = 0; i < _borders.Count; i += 2)
-            {
-                drawingContext.DrawLine(hullPen, _borders[i], _borders[i + 1]);
-            }
-        }
-
-        protected void Jarvice(DrawingContext drawingContext)
-        {
-            _borders.Clear();
-            var hullPen = new Pen(Brushes.Green, 2, lineCap: PenLineCap.Square);
-
-            int leftestIndex = 0;
-            for (int i = 1; i < _shapes.Count; i++)
-            {
-                if (_shapes[i].X < _shapes[leftestIndex].X)
-                    leftestIndex = i;
-            }
-
-            List<Avalonia.Point> hullPoints = new List<Avalonia.Point>();
-            int currentIndex = leftestIndex;
-            do
-            {
-                hullPoints.Add(new Avalonia.Point(_shapes[currentIndex].X, _shapes[currentIndex].Y));
-                int nextIndex = (currentIndex + 1) % _shapes.Count;
-                for (int i = 0; i < _shapes.Count; i++)
-                {
-                    if (i == currentIndex)
-                        continue;
-                    double cross = CrossProduct(_shapes[currentIndex], _shapes[nextIndex], _shapes[i]);
-                    if (cross > 0)
-                        nextIndex = i;
-                    else if (cross == 0)
-                    {
-                        if (DistanceSquared(_shapes[currentIndex], _shapes[i]) >
-                            DistanceSquared(_shapes[currentIndex], _shapes[nextIndex]))
-                        {
-                            nextIndex = i;
-                        }
-                    }
-                }
-                currentIndex = nextIndex;
-            } while (currentIndex != leftestIndex);
-
-            for (int i = 0; i < hullPoints.Count; i++)
-            {
-                Avalonia.Point p1 = hullPoints[i];
-                Avalonia.Point p2 = hullPoints[(i + 1) % hullPoints.Count];
-                _borders.Add(p1);
-                _borders.Add(p2);
-            }
 
             for (int i = 0; i < _borders.Count; i += 2)
             {
@@ -188,9 +59,23 @@ namespace PolygonsLIT
             }
         }
         
-        protected List<Avalonia.Point> ByDefinition()
+        private void OpenAnalitycsWindow()
         {
-            List<Avalonia.Point> borders = new List<Avalonia.Point>();
+            if (_analitycsWindow == null)
+            {
+                _analitycsWindow = new AnalitycsWindow();
+                _analitycsWindow.Closed += (sender, e) => _analitycsWindow = null;
+                _analitycsWindow.Show();
+            }
+            else
+            {
+                _analitycsWindow.Activate();
+            }
+        }
+
+        public List<Avalonia.Point> CalculateByDefinition()
+        {
+            List<Avalonia.Point> borders = new ();
             if (_shapes.Count < 3)
                 return borders;
 
@@ -269,12 +154,13 @@ namespace PolygonsLIT
                     }
                 }
             }
+            Console.WriteLine("Using By Definition");
             return borders;
         }
 
-        protected List<Avalonia.Point> Jarvice()
+        public List<Avalonia.Point> CalculateJarvice()
         {
-            List<Avalonia.Point> borders = new List<Avalonia.Point>();
+            List<Avalonia.Point> borders = new ();
             if (_shapes.Count < 3)
                 return borders;
 
@@ -317,70 +203,10 @@ namespace PolygonsLIT
                 borders.Add(p1);
                 borders.Add(p2);
             }
+            Console.WriteLine("Using Jarvice");
             return borders;
         }
-        
 
-        public void SpeedTest()
-        {
-            _shapes = CreateRandomShapes(_shapes.Count);
-
-            Stopwatch stopwatchDef = new Stopwatch();
-            stopwatchDef.Start();
-            var bordersDef = ByDefinition();
-            stopwatchDef.Stop();
-
-            Stopwatch stopwatchJar = new Stopwatch();
-            stopwatchJar.Start();
-            var bordersJar = Jarvice();
-            stopwatchJar.Stop();
-
-            Console.WriteLine("ByDefinition execution time: " + stopwatchDef.Elapsed.TotalMilliseconds + " ms");
-            Console.WriteLine("Jarvice execution time: " + stopwatchJar.Elapsed.TotalMilliseconds + " ms");
-
-            if (_analitycsWindow == null || !_analitycsWindow.IsVisible)
-            {
-                _analitycsWindow = new AnalitycsWindow();
-                _analitycsWindow.Show();
-            }
-
-            _analitycsWindow.UpdateCharts(
-                stopwatchDef.Elapsed.TotalMilliseconds,
-                stopwatchJar.Elapsed.TotalMilliseconds,
-                bordersDef.Count / 2,
-                bordersJar.Count / 2
-            );
-        }
-
-
-        private List<Shape> CreateRandomShapes(int count)
-        {
-            List<Shape> shapes = [];
-            int maxX = 800;
-            int maxY = 600;
-            for (int i = 0; i < count; i++)
-            {
-                int x = _random.Next(0, maxX);
-                int y = _random.Next(0, maxY);
-                int shapeType = _random.Next(0, 3);
-                switch (shapeType)
-                {
-                    case 0:
-                        shapes.Add(new Circle(x, y, Shape.Radius));
-                        break;
-                    case 1:
-                        shapes.Add(new Square(x, y));
-                        break;
-                    case 2:
-                        shapes.Add(new Triangle(x, y));
-                        break;
-                }
-            }
-            return shapes;
-        }
-        
-
-        // Вычисление кросс-произведения векторов (p -> q) и (p -> r).
         private double CrossProduct(Shape p, Shape q, Shape r)
         {
             return (q.X - p.X) * (r.Y - p.Y) - (q.Y - p.Y) * (r.X - p.X);
@@ -393,6 +219,13 @@ namespace PolygonsLIT
             return dx * dx + dy * dy;
         }
         
+        public void UpdateRadius(object? sender, DelegateRadius.RadiusEventArgs e)
+        {
+            Shape.Radius = e.R;
+            InvalidateVisual();
+        }
+
+            
         public void RightClick(int x, int y)
         {
             _cx = x;

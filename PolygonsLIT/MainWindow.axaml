@@ -20,11 +20,12 @@
                 <ComboBoxItem>Square</ComboBoxItem>
                 <ComboBoxItem>Triangle</ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="AlgorithmComboBox" SelectedIndex="0" MaxDropDownHeight="100"
+            <ComboBox x:Name="AlgorithmComboBox" SelectedIndex="0" MaxDropDownHeight="200"
                       Margin="20,0,0,0"
                       SelectionChanged="AlgorithmComboBox_OnSelectionChangedComboBox_SelectionChanged">
                 <ComboBoxItem>ByDefenition</ComboBoxItem>
                 <ComboBoxItem>Jarvice</ComboBoxItem>
+                <ComboBoxItem>Radius</ComboBoxItem>
                 <ComboBoxItem>Analitycs</ComboBoxItem>
             </ComboBox>
         </StackPanel>

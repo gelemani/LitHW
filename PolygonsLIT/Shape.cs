@@ -17,6 +17,7 @@ public abstract class Shape
     public bool IsMoving = false;
     protected int Dx { get; set; }
     protected int Dy { get; set; }
+    public bool isVertex = false;
 
     public int DX 
     {
@@ -29,7 +30,9 @@ public abstract class Shape
         get { return Dy; }
         set { Dy = value; }
     }
-    
+
+    public bool IsVertex { get; set; }
+
     protected Shape(int x, int y, string color)
     {
         X = x;

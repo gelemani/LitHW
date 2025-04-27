@@ -56,7 +56,15 @@ public partial class MainWindow : Window
     {
         if (sender is ComboBox comboBox && CustomControl != null)
         {
+            CustomControl customControl = this.Find<CustomControl>("CustomControl")!;
             CustomControl.SelectedAlgorithmIndex = comboBox.SelectedIndex;
+            if (comboBox.SelectedIndex == 2)
+            {
+                var radiusWindow = new RadiusWindow(Shape.Radius);
+                radiusWindow.Rc += customControl.UpdateRadius;
+                radiusWindow.Activate();
+                radiusWindow.Show();
+            }
         }
     }
 }
