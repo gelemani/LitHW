@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="https://github.com/avaloniaui"
+        xmlns:colorPicker="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.ColorPicker"
+        mc:Ignorable="d"
+        x:Class="PolygonsLIT.ColorPick"
+        Width="350"
+        Height="280"
+        Title="Color">
+    <DockPanel>
+        <colorPicker:ColorPicker Name="ColorPicker"
+                                 DockPanel.Dock="Top"
+                                 Background="Gray"
+                                 Color="IndianRed"/>
+        <Grid ColumnDefinitions="300,300">
+            <Button Content="OK"
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="OkButtonPressed"/>
+            <Button Content="Default"
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    Click="DefaultButton_Pressed"/>
+        </Grid>
+    </DockPanel>
+</Window>

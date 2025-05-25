@@ -8,11 +8,8 @@ public abstract class Shape
     protected internal int Y { get; set; }
     protected string Color { get; set; } = null!;
     public static int Radius { get; set; }
-    // protected static int Radius
-    // {
-    //     get { return Radius; }
-    //     set { Radius = value;  }
-    // }
+    static Pen _pen;
+    static Brush _brush = new SolidColorBrush(Colors.DarkRed);
 
     public bool IsMoving = false;
     protected int Dx { get; set; }
@@ -32,7 +29,17 @@ public abstract class Shape
     }
 
     public bool IsVertex { get; set; }
+    public static Pen Pen { get; set; }
 
+    public static Brush Brush
+    {
+        get => _brush;
+        set
+        {
+            _brush = value;
+            _pen = new Pen(_brush, 3);
+        }
+    }
     protected Shape(int x, int y, string color)
     {
         X = x;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Media;
 using PolygonsLIT.Shapes;
@@ -11,21 +12,30 @@ namespace PolygonsLIT
 {
     public class CustomControl : UserControl
     {
-        private static Random _random = new();
         private List<Shape> _shapes = new();
-        private List<Shape> _speedShapes = new();
         List<Avalonia.Point> _borders = new();
         private int _cx, _cy;
+
         public int SelectedShapeIndex { get; set; } = 0;
         public int SelectedAlgorithmIndex { get; set; } = 0;
         private AnalitycsWindow? _analitycsWindow;
+        private int _dy;
+        public DrawingContext DC { get; set; }
+        public Func<List<Avalonia.Point>> AlgDef { get; set; }
+        public Func<List<Avalonia.Point>> AlgJar { get; set; }
+        public int SelectedFileControlIndex { get; set; }
 
         public override void Render(DrawingContext drawingContext)
         {
+            DC = drawingContext;
+            AlgDef = CalculateByDefinition;
+            AlgJar = CalculateJarvice;
+
             foreach (Shape shape in _shapes)
             {
                 shape.Draw(drawingContext);
             }
+
             if (_shapes.Count < 3)
                 return;
 
@@ -37,10 +47,6 @@ namespace PolygonsLIT
                 case 1:
                     DrawConvexHull(drawingContext, CalculateJarvice);
                     break;
-                case 3:
-                    OpenAnalitycsWindow();
-                    SelectedAlgorithmIndex = 0;
-                    break;
                 default:
                     DrawConvexHull(drawingContext, CalculateByDefinition);
                     Console.WriteLine("Using By Definition (default)");
@@ -48,18 +54,18 @@ namespace PolygonsLIT
             }
         }
 
-        private void DrawConvexHull(DrawingContext drawingContext, Func<List<Avalonia.Point>> calculateHull)
+        public void DrawConvexHull(DrawingContext drawingContext, Func<List<Avalonia.Point>> calculateHull)
         {
             _borders = calculateHull();
-            var hullPen = new Pen(Brushes.Green, 2, lineCap: PenLineCap.Square);
+            var hullPen = new Pen(Brushes.DimGray, 2, lineCap: PenLineCap.Square);
 
             for (int i = 0; i < _borders.Count; i += 2)
             {
                 drawingContext.DrawLine(hullPen, _borders[i], _borders[i + 1]);
             }
         }
-        
-        private void OpenAnalitycsWindow()
+
+        public void OpenAnalitycsWindow()
         {
             if (_analitycsWindow == null)
             {
@@ -75,7 +81,7 @@ namespace PolygonsLIT
 
         public List<Avalonia.Point> CalculateByDefinition()
         {
-            List<Avalonia.Point> borders = new ();
+            List<Avalonia.Point> borders = new();
             if (_shapes.Count < 3)
                 return borders;
 
@@ -154,13 +160,14 @@ namespace PolygonsLIT
                     }
                 }
             }
+
             Console.WriteLine("Using By Definition");
             return borders;
         }
 
-        public List<Avalonia.Point> CalculateJarvice()
+        private List<Avalonia.Point> CalculateJarvice()
         {
-            List<Avalonia.Point> borders = new ();
+            List<Avalonia.Point> borders = new();
             if (_shapes.Count < 3)
                 return borders;
 
@@ -193,16 +200,18 @@ namespace PolygonsLIT
                         }
                     }
                 }
+
                 currentIndex = nextIndex;
             } while (currentIndex != leftestIndex);
 
             for (int i = 0; i < hullPoints.Count; i++)
             {
-                Avalonia.Point p1 = hullPoints[i];
-                Avalonia.Point p2 = hullPoints[(i + 1) % hullPoints.Count];
+                Point p1 = hullPoints[i];
+                Point p2 = hullPoints[(i + 1) % hullPoints.Count];
                 borders.Add(p1);
                 borders.Add(p2);
             }
+
             Console.WriteLine("Using Jarvice");
             return borders;
         }
@@ -218,14 +227,21 @@ namespace PolygonsLIT
             double dy = b.Y - a.Y;
             return dx * dx + dy * dy;
         }
-        
-        public void UpdateRadius(object? sender, DelegateRadius.RadiusEventArgs e)
+
+        public void UpdateRadius(object? sender, Delegates.RadiusEventArgs e)
         {
             Shape.Radius = e.R;
             InvalidateVisual();
         }
 
-            
+        public void UpdateColor(object? sender, Delegates.ColorEventArgs e)
+        {
+            Brush newBrush = new SolidColorBrush((Color)e.Color);
+            Shape.Brush = newBrush;
+            Shape.Pen = new Pen(newBrush, 3);
+            InvalidateVisual();
+        }
+
         public void RightClick(int x, int y)
         {
             _cx = x;
@@ -241,6 +257,7 @@ namespace PolygonsLIT
                     counter++;
                 }
             }
+
             if (counter == 0)
             {
                 switch (SelectedShapeIndex)
@@ -262,6 +279,7 @@ namespace PolygonsLIT
                         Console.WriteLine("Drawing a circle!");
                         break;
                 }
+
                 InvalidateVisual();
                 counter = 0;
             }
@@ -269,7 +287,7 @@ namespace PolygonsLIT
 
         public void LeftClick(int x, int y)
         {
-            int deleteIndex = -1;
+            var deleteIndex = -1;
             foreach (Shape shape in _shapes)
             {
                 if (shape.IsInside(x, y))
@@ -278,10 +296,12 @@ namespace PolygonsLIT
                     break;
                 }
             }
+
             if (deleteIndex != -1)
             {
                 _shapes.RemoveAt(deleteIndex);
             }
+
             InvalidateVisual();
         }
 
@@ -312,8 +332,93 @@ namespace PolygonsLIT
                         newShapes.Add(shape);
                     }
                 }
+
                 _shapes = newShapes;
             }
+
+            InvalidateVisual();
+        }
+
+        public void CheckRayIntersections()
+        {
+            if (_borders == null || _borders.Count < 2)
+                return;
+
+            int width = (int)Bounds.Width;
+            int height = (int)Bounds.Height;
+
+            for (int y = 0; y < height; y += 10) // step by 10 for performance
+            {
+                for (int x = 0; x < width; x += 10)
+                {
+                    int intersections = 0;
+                    for (int i = 0; i < _borders.Count; i += 2)
+                    {
+                        var p1 = _borders[i];
+                        var p2 = _borders[i + 1];
+
+                        if (IsIntersectingHorizontalRay(x, y, p1, p2))
+                            intersections++;
+                    }
+
+                    if (intersections % 2 != 0)
+                    {
+                        InvalidateVisual();
+                    }
+                }
+            }
+        }
+
+        private bool IsIntersectingHorizontalRay(double x, double y, Point p1, Point p2)
+        {
+            if (p1.Y > p2.Y)
+            {
+                var temp = p1;
+                p1 = p2;
+                p2 = temp;
+            }
+
+            if (y == p1.Y || y == p2.Y)
+                y += 0.0001; // perturb a bit to avoid ambiguity
+
+            if (y < p1.Y || y > p2.Y)
+                return false;
+
+            if (p1.X > p2.X)
+                (p1, p2) = (p2, p1);
+
+            double xIntersection = p1.X + (y - p1.Y) * (p2.X - p1.X) / (p2.Y - p1.Y);
+
+            return xIntersection > x;
+        }
+
+
+        public void MoveHull(int newX, int newY)
+        {
+            if (_borders == null || _borders.Count == 0)
+                return;
+
+            double centerX = 0;
+            double centerY = 0;
+
+            foreach (var point in _borders)
+            {
+                centerX += point.X;
+                centerY += point.Y;
+            }
+
+            centerX /= _borders.Count;
+            centerY /= _borders.Count;
+
+            double dx = newX - centerX;
+            double dy = newY - centerY;
+
+            for (int i = 0; i < _borders.Count; i++)
+            {
+                var p = _borders[i];
+                _borders[i] = new Point(p.X + dx, p.Y + dy);
+            }
+
             InvalidateVisual();
         }
     }

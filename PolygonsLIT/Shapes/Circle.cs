@@ -12,10 +12,10 @@ namespace PolygonsLIT.Shapes
         }
         public override void Draw(DrawingContext drawingContext)
         {
-            Pen pen = new Pen(Brushes.Purple, 5);   
-            Brush brush = new SolidColorBrush(Colors.White);
+            // Pen pen = new Pen(Brushes.Purple, 5);   
+            // Brush brush = new SolidColorBrush(Colors.White);
 
-            drawingContext.DrawEllipse(brush, pen, new Point(X, Y), Radius, Radius);
+            drawingContext.DrawEllipse(Brush, Pen, new Point(X, Y), Radius, Radius);
             // Console.WriteLine("Drawing a circle!");
         }
 

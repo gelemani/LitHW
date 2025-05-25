@@ -13,8 +13,8 @@ public class Triangle : Shape
 
     public override void Draw(DrawingContext drawingContext)
     {
-        Pen pen = new Pen(Brushes.Purple, 5);
-        Brush brush = new SolidColorBrush(Colors.FloralWhite);
+        // Pen pen = new Pen(Brushes.Purple, 5);
+        // Brush brush = new SolidColorBrush(Colors.FloralWhite);
 
         _unoPoint = new Point(X, Y - Radius);
         _dosPoint = new Point(X + (Radius / 2 * Math.Sqrt(3)), Y + Radius / 2);
@@ -29,7 +29,7 @@ public class Triangle : Shape
         };
 
         PolylineGeometry geometry = new PolylineGeometry(points, true);
-        drawingContext.DrawGeometry(brush, pen, geometry);
+        drawingContext.DrawGeometry(Brush, Pen, geometry);
         // Console.WriteLine("Drawing a triangle!");
     }
 

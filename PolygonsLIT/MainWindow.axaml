@@ -13,19 +13,35 @@
         Title="PolygonsLIT">
     <Grid>
         <polygonsLit:CustomControl Name="CustomControl"/>
-        <StackPanel Margin="20" Orientation="Horizontal">
+        <StackPanel Margin="12,0,0,0" Orientation="Horizontal">
+            <ComboBox x:Name="FileControlComboBox" SelectedIndex="-1" MaxDropDownHeight="400"
+                      PlaceholderText="File"
+                      SelectionChanged="FileControlComboBox_SelectionChanged">
+                <ComboBoxItem>New</ComboBoxItem>
+                <ComboBoxItem>Open</ComboBoxItem>
+                <ComboBoxItem>Save</ComboBoxItem>
+                <ComboBoxItem>Save as</ComboBoxItem>
+                <ComboBoxItem>Exit</ComboBoxItem>
+            </ComboBox>
             <ComboBox x:Name="ShapeComboBox" SelectedIndex="0" MaxDropDownHeight="100"
+                      Margin="10,0,0,0"
                       SelectionChanged="ShapeComboBox_SelectionChanged">
                 <ComboBoxItem>Circle</ComboBoxItem>
                 <ComboBoxItem>Square</ComboBoxItem>
                 <ComboBoxItem>Triangle</ComboBoxItem>
             </ComboBox>
             <ComboBox x:Name="AlgorithmComboBox" SelectedIndex="0" MaxDropDownHeight="200"
-                      Margin="20,0,0,0"
+                      Margin="10,0,10,0"
                       SelectionChanged="AlgorithmComboBox_OnSelectionChangedComboBox_SelectionChanged">
-                <ComboBoxItem>ByDefenition</ComboBoxItem>
+                <ComboBoxItem>Default</ComboBoxItem>
                 <ComboBoxItem>Jarvice</ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="Settings" SelectedIndex="-1" MaxDropDownHeight="100"
+                      PlaceholderText="Settings"
+                      SelectionChanged="SettingsCombobox_SelectionChanged"
+                      DropDownClosed="SettingsComboBox_DropDownClosed">
                 <ComboBoxItem>Radius</ComboBoxItem>
+                <ComboBoxItem>Color</ComboBoxItem>
                 <ComboBoxItem>Analitycs</ComboBoxItem>
             </ComboBox>
         </StackPanel>

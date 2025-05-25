@@ -14,13 +14,13 @@ public partial class RadiusWindow : Window
         slider.Value = radius;
     }
     
-    public event DelegateRadius.RadiusChangedHandler? Rc;
+    public event Delegates.RadiusChangedHandler? Rc;
 
     private void RadiusSliderValue(object sender, RoutedEventArgs e)
     {
         if (Rc != null)
         {
-            Rc(this, new DelegateRadius.RadiusEventArgs(Convert.ToInt32(slider.Value)));
+            Rc(this, new Delegates.RadiusEventArgs(Convert.ToInt32(slider.Value)));
         }
     }
 }

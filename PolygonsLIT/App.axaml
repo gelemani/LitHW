@@ -4,7 +4,11 @@
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
+         <Application.Styles>
+             <FluentTheme />
+             <!-- <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent/Styles.axaml"/> -->
+             <!-- <StyleInclude Source="avares://Avalonia.Controls/Styles/Fluent.xaml"/> -->
+             <!-- <StyleInclude Source="avares://Avalonia.Themes.Fluent/Fluent.xaml"/> -->
+             <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+         </Application.Styles>
 </Application>

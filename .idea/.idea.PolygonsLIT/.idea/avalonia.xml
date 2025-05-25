@@ -5,6 +5,7 @@
       <map>
         <entry key="PolygonsLIT/AnalitycsWindow.axaml" value="PolygonsLIT/PolygonsLIT.csproj" />
         <entry key="PolygonsLIT/App.axaml" value="PolygonsLIT/PolygonsLIT.csproj" />
+        <entry key="PolygonsLIT/ColorPick.axaml" value="PolygonsLIT/PolygonsLIT.csproj" />
         <entry key="PolygonsLIT/MainWindow.axaml" value="PolygonsLIT/PolygonsLIT.csproj" />
         <entry key="PolygonsLIT/PlotView.axaml" value="PolygonsLIT/PolygonsLIT.csproj" />
         <entry key="PolygonsLIT/RadiusWindow.axaml" value="PolygonsLIT/PolygonsLIT.csproj" />
